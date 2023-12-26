@@ -1,0 +1,11 @@
+POST http://localhost:8080/register
+Content-Type: application/json;
+
+{
+  "name": "Nguyen Van A",
+  "address": "Huế",
+  "phone": "0123456789",
+  "email": "hungho1@gmail.com",
+  "username": "hovanhung",
+  "password": "123"
+}

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tiki - Mua hàng online giá tốt, hàng chuẩn, ship nhanh</title>
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/user.css">
+    <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+</head>
+
+<body>
+
+<div th:replace="header"></div>
+
+<main>
+    <div class="nav">
+        <div class="avatar">
+            <img th:src="${user.photo}" alt="">
+            <p th:text="${user.name}"></p>
+        </div>
+        <ul class="profiles">
+            <li>
+                <i class="fa-solid fa-user"></i>
+                <span>Tài khoản của tôi</span>
+                <ul>
+                    <li class="profile">
+                        <a th:href="@{/user/profile}">Hồ sơ</a>
+                    </li>
+                    <li class="password">
+                        <a th:href="@{/user/password}">Đổi mật khẩu</a>
+                    </li>
+                    <li class="address active">
+                        <a th:href="@{/user/address}">Địa chỉ</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fa-solid fa-envelope-open-text"></i>
+                    <span>Đơn mua</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="details">
+        <div class="title">
+            <p>Thay đổi địa chỉ</p>
+        </div>
+        <div class="content">
+            <div style="width: 100%;">
+                <div class="infor">
+                    <p class="name" th:text="${user.name}"></p>
+                    <p class="phone" th:text="${user.phone}"></p>
+                </div>
+                <div class="address">
+                    <p th:text="${user.address}">Xã Thủy Thanh, Thị Xã Hương Thủy, Thừa Thiên Huế</p>
+
+                    <div class="new-address">Thay đổi địa chỉ mới</div>
+
+                    <form id="addressForm" method="post">
+                        <div>
+                            <div class="form-group">
+                                <select name="province" id="province" onchange="changeProvince()"
+                                        class="js-example-basic-single">
+                                    <option disabled="disabled" selected>Tỉnh</option>
+                                </select>
+                                <p class="error-message"></p>
+                            </div>
+                            <div class="form-group">
+                                <select name="district" id="district" onchange="changeDistrict()"
+                                        class="js-example-basic-single">
+                                    <option disabled="disabled" selected>Quận / Huyện</option>
+                                </select>
+                                <p class="error-message"></p>
+                            </div>
+                            <div class="form-group">
+                                <select name="ward" id="ward" onchange="changeWard()"
+                                        class="js-example-basic-single">
+                                    <option disabled="disabled" selected>Phường / Xã</option>
+                                </select>
+                                <p class="error-message"></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" placeholder="Số nhà, tòa nhà ..." id="specific-address"
+                                   class="detail_add" name="specific-address">
+                        </div>
+                        <div>
+                            <button type="submit" class="button-1">Lưu</button>
+                            <button type="button" class="button-1">
+                                <a th:href="@{/user/profile}">Quay lại</a>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="/js/changeAddress.js"></script>
+</body>
+
+</html>

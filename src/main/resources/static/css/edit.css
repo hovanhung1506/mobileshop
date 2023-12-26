@@ -1,0 +1,166 @@
+@import url(https://fonts.googleapis.com/css?family=Inter:100,200,300,regular,500,600,700,800,900);
+
+:root {
+  --primary-color: #0a68ff;
+  --text-color: #808089;
+}
+
+html {
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  font-size: 1.4rem;
+}
+
+.wrapper {
+  display: flex;
+  min-height: 100vh;
+}
+
+nav {
+  flex-basis: 15%;
+  background-color: var(--primary-color);
+  color: #fff;
+}
+
+nav .logo img {
+  width: 150px;
+  margin: 0 auto;
+}
+
+.sibebar {
+  font-weight: 500;
+}
+
+.sibebar > li {
+  margin-bottom: 80px;
+}
+
+.sibebar > li > a {
+  border-bottom: 1px solid #6094ee;
+  display: block;
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.tree-menu li {
+  border-bottom: 1px solid #6094ee;
+}
+
+.tree-menu li a {
+  padding: 12px 16px;
+  display: block;
+  transition: all 0.2s linear;
+  -webkit-transition: all 0.2s linear;
+  -moz-transition: all 0.2s linear;
+  -ms-transition: all 0.2s linear;
+  -o-transition: all 0.2s linear;
+}
+
+.tree-menu li a:hover,
+.tree-menu li.active {
+  background-color: #7ea7f2;
+}
+
+.content {
+  flex-basis: 85%;
+  padding: 0 60px;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 25px 0;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-group {
+  display: flex;
+  align-items: center;
+}
+
+label {
+  flex-basis: 200px;
+  font-weight: 500;
+}
+
+label sup {
+  color: #f00;
+}
+
+input,
+select,
+textarea,
+button {
+  font-family: 'Inter', sans-serif;
+}
+
+input,
+textarea,
+select {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #b8b8b8;
+  border-radius: 2px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -ms-border-radius: 2px;
+  -o-border-radius: 2px;
+  outline: none;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: #797979;
+}
+
+.col2 {
+  display: flex;
+  gap: 50px;
+}
+
+.col2 .form-group {
+  flex-basis: 50%;
+}
+
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+}
+
+.btn a {
+  padding: 8px 20px;
+  background-color: #eabb5d;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.btn button {
+  border: none;
+  outline: none;
+  background-color: #6aaba2;
+  padding: 8px 20px;
+  text-transform: uppercase;
+  font-weight: 500;
+}

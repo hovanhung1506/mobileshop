@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tiki - Mua hàng online giá tốt, hàng chuẩn, ship nhanh</title>
+<link rel="stylesheet" href="/css/reset.css">
+<link rel="stylesheet" href="/css/header.css">
+<link rel="stylesheet" href="/css/user.css">
+<link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+</head>
+
+<body>
+<div th:replace="header"></div>
+<script th:if="${status != null}" th:inline="javascript">
+    let message = /*[[${status}]]*/ ""
+    alert(message)
+</script>
+<main>
+    <div class="nav">
+        <div class="avatar avatar-small">
+            <img th:src="${user.photo}" alt="">
+            <p th:text="${user.name}"></p>
+        </div>
+        <ul class="profiles">
+            <li>
+                <i class="fa-solid fa-user"></i>
+                <span>Tài khoản của tôi</span>
+                <ul>
+                    <li class="profile active">
+                        <a th:href="@{/user/profile}">Hồ sơ</a>
+                    </li>
+                    <li class="password">
+                        <a th:href="@{/user/password}">Đổi mật khẩu</a>
+                    </li>
+                    <li class="address">
+                        <a th:href="@{/user/address}">Địa chỉ</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fa-solid fa-envelope-open-text"></i>
+                    <span>Đơn mua</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="details">
+        <div class="title">
+            <p>Hồ Sơ Của Tôi</p>
+        </div>
+        <div class="content">
+            <div class="information">
+                <form id="form" th:action="@{/user/profile}" method="post">
+                    <div class="item">
+                        <p class="label">Tên đăng nhập</p>
+                        <p th:text="${user.username}"></p>
+                    </div>
+                    <div class="item">
+                        <p class="label">Họ và tên</p>
+                        <div class="W50dp5">
+                            <input type="text" th:value="${data == null ? user.name : data['name']}" name="name" required>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <p class="label">Email</p>
+                        <div class="W50dp5">
+                            <input type="text" th:value="${data == null ? user.email : data['email']}" name="email" id="email" required>
+                            <p class="error-message" th:text="${errors != null ? errors['email'] : ''}"></p>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <p class="label">Số điện thoại</p>
+                        <div class="W50dp5">
+                            <input type="text" th:value="${data == null ? user.phone : data['phone']}" name="phone" id="phone" required>
+                            <p class="error-message" th:text="${errors != null ? errors['phone'] : ''}"></p>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <p class="label"></p>
+                        <button type="submit">Lưu</button>
+                    </div>
+                </form>
+            </div>
+            <div class="avatar">
+                <img class="imagePreview" th:src="${user.photo}" alt="">
+                <label for="fileInp">Chọn Ảnh</label>
+                <input type="file" id="fileInp" accept="image/*">
+                <button class="saveImage not-allowed">
+                    Lưu Ảnh
+                </button>
+            </div>
+        </div>
+    </div>
+</main>
+<script src="https://www.gstatic.com/firebasejs/6.0.2/firebase.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<script src="/js/uploadImage.js"></script>
+<script src="/js/profile.js"></script>
+</body>
+
+</html>

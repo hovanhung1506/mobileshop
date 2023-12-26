@@ -1,0 +1,240 @@
+header {
+  padding: 8px 40px;
+  background-color: #fff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 99;
+}
+
+header .content {
+  display: flex;
+  padding: 0px 24px;
+  align-items: center;
+  gap: 48px;
+}
+
+header .logo {
+  width: 72px;
+  height: 72px;
+}
+
+header .search {
+  display: flex;
+  width: 50%;
+  border: 1px solid #dddde3;
+  border-radius: 8px;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  -ms-border-radius: 8px;
+  -o-border-radius: 8px;
+  align-items: center;
+  flex-basis: 58%;
+  padding-left: 18px;
+  overflow: hidden;
+}
+
+header .search form {
+  width: 100%;
+  display: flex;
+  height: 40px;
+}
+
+header .search form input {
+  flex-basis: 88%;
+  outline: none;
+  border: none;
+  padding: 0 18px;
+  font-size: 1.4rem;
+}
+
+header .search form button {
+  flex-basis: 12%;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  font-size: 1.4rem;
+  color: var(--primary-color);
+  position: relative;
+}
+
+header .search form button:hover {
+  background-color: rgba(10, 104, 255, 0.2);
+}
+
+header .search form button::after {
+  content: '';
+  position: absolute;
+  width: 1px;
+  height: 20px;
+  background-color: #dddde3;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  -o-transform: translateY(-50%);
+}
+
+header .search span {
+  font-size: 1.6rem;
+  color: var(--text-color);
+}
+
+header .controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex: 1;
+}
+
+header .controls .controls_item {
+  font-weight: 500;
+  font-size: 1.4rem;
+}
+
+header .controls .controls_item a {
+  color: var(--text-color);
+  padding: 10px 16px;
+  border-radius: 8px;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  -ms-border-radius: 8px;
+  -o-border-radius: 8px;
+  max-width: 130px;
+  display: block;
+  white-space: nowrap;
+}
+
+header .controls .controls_item.account a {
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+header .controls .controls_item i {
+  font-size: 2rem;
+  margin-right: 4px;
+}
+
+header .controls .controls_item.active a,
+header .controls .controls_item:last-child a {
+  color: var(--primary-color);
+}
+
+header .controls .controls_item:hover a {
+  background-color: rgba(39, 39, 42, 0.12);
+}
+
+header .controls .controls_item.active:hover a,
+header .controls .controls_item:last-child:hover a {
+  background-color: rgba(0, 96, 255, 0.12);
+}
+
+header .controls .controls_item.account {
+	position: relative;
+}
+
+header .controls .controls_item.account:hover .submenu {
+  display: block;
+}
+
+header .controls .controls_item.account .submenu::after {
+  position: absolute;
+  content: '';
+  top: 0;
+  right: 35px;
+  border: 8px solid black;
+  border-color: transparent transparent #fff #fff;
+  transform-origin: 0 0;
+  transform: rotate(135deg);
+  box-shadow: -2px 1px 1px 0 rgba(0, 0, 0, 0.25);
+  -webkit-transform: rotate(135deg);
+  -moz-transform: rotate(135deg);
+  -ms-transform: rotate(135deg);
+  -o-transform: rotate(135deg);
+  z-index: -1;
+}
+
+header .controls .controls_item.account .submenu::before {
+  position: absolute;
+  content: '';
+  top: -5px;
+  right: 0;
+  height: 5px;
+  width: 100%;
+  background-color: transparent;
+}
+
+header .controls .controls_item.account .submenu {
+  z-index: 1;
+  position: absolute;
+  background-color: #fff;
+  top: calc(100% + 5px);
+  right: 0;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+  width: 200px;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  display: none;
+}
+
+header .controls .controls_item.account .submenu li {
+  padding: 8px 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+header .controls .controls_item.account .submenu li:first-child {
+  border-radius: 4px 4px 0px 0px;
+  -webkit-border-radius: 4px 4px 0px 0px;
+  -moz-border-radius: 4px 4px 0px 0px;
+  -ms-border-radius: 4px 4px 0px 0px;
+  -o-border-radius: 4px 4px 0px 0px;
+}
+
+header .controls .controls_item.account .submenu li:last-child {
+  border-radius: 0px 0px 4px 4px;
+  -webkit-border-radius: 0px 0px 4px 4px;
+  -moz-border-radius: 0px 0px 4px 4px;
+  -ms-border-radius: 0px 0px 4px 4px;
+  -o-border-radius: 0px 0px 4px 4px;
+}
+
+header .controls .controls_item.account .submenu li:hover {
+  color: var(--primary-color);
+}
+
+header .controls .controls_item.account .submenu li span i {
+  font-size: 2rem;
+}
+
+header .controls .controls_item.account .submenu li span:first-child {
+  width: 30px;
+}
+
+
+header .controls .controls_item .cart {
+  position: relative;
+}
+
+header .controls .controls_item .cart .quantity {
+  position: absolute;
+  top: -5px;
+  right: 8px;
+  padding: 1px 4px;
+  background-color: red;
+  color: #fff;
+  border-radius: 8px;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  -ms-border-radius: 8px;
+  -o-border-radius: 8px;
+  font-size: 1.1rem;
+}

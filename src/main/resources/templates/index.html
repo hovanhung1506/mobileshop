@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tiki - Mua hàng online giá tốt, hàng chuẩn, ship nhanh</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <link rel="stylesheet"
+          href="/assets/owlcarousel/assets/owl.carousel.min.css">
+    <link rel="stylesheet"
+          href="/assets/owlcarousel/assets/owl.theme.default.min.css">
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/home.css">
+    <link rel="stylesheet" href="/css/pagination.css">
+    <link rel="shortcut icon" href="/images/favicon.png"
+          type="image/x-icon">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+    <script src="/assets/vendors/jquery.min.js"></script>
+    <script src="/assets/owlcarousel/owl.carousel.js"></script>
+</head>
+<body>
+<div th:replace="header"></div>
+<main>
+    <div class="wrapper">
+        <section class="category">
+            <p class="title">Danh mục</p>
+            <ul class="category_list">
+                <li th:each="brand : ${brands}" class="category_item">
+                    <a th:href="@{/brand/{brandName} (brandName=${brand.name.toLowerCase()})}"
+                       th:text="${brand.name}"
+                    ></a>
+                </li>
+            </ul>
+        </section>
+        <section class="content">
+            <div th:replace="banner"></div>
+            <div class="products">
+                <ul th:if="${products.size() != 0}" class="product__list">
+                    <li th:each="product : ${products}" class="product__item">
+                        <a th:href="@{/product/{productName} (productName=${product.name.toLowerCase().replaceAll(' ','-')})}">
+                            <div class="product__img">
+                                <img th:src="'/'+ ${product.photo}" alt="">
+                            </div>
+                            <div class="product__info">
+                                <span> <i class="fa-solid fa-circle-check"></i>
+                                    OFFICIAL
+                                </span>
+                                <p class="product__title" th:text="${product.name}"></p>
+                                <p class="product__price" th:text="${product.price}"></p>
+                                <p>
+                                    <img src="/images/now.png" alt=""> <span>Giao siêu tốc 2h</span>
+                                </p>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+                <h1 th:if="${products.size() == 0}">Không có kết quả phù hợp</h1>
+            </div>
+        </section>
+    </div>
+
+    <div class="pagination">
+        <ul>
+        </ul>
+    </div>
+</main>
+
+<div class="backToTop">
+    <span><i class="fa-solid fa-caret-up"></i></span>
+</div>
+
+<script src="/js/main.js"></script>
+<script src="/js/owlcarousel.js"></script>
+<script src="/js/pagination.js"></script>
+<script type="text/javascript" th:inline="javascript">
+    let totalPage = /*[[${totalPage}]]*/ 1;
+    let currentPage = /*[[${page}]]*/ 1;
+    totalPage = !totalPage ? 1 : totalPage;
+    currentPage = !currentPage ? 1 : currentPage;
+    pagination(totalPage, currentPage)
+</script>
+</body>
+</html>
