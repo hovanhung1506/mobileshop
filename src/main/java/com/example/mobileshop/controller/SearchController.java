@@ -1,6 +1,7 @@
 package com.example.mobileshop.controller;
 
 import com.example.mobileshop.domain.Cart;
+import com.example.mobileshop.domain.Product;
 import com.example.mobileshop.security.UserPrincipal;
 import com.example.mobileshop.service.BrandService;
 import com.example.mobileshop.service.CartService;
@@ -8,6 +9,9 @@ import com.example.mobileshop.service.CustomerService;
 import com.example.mobileshop.service.ProductService;
 import com.example.mobileshop.utils.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,6 +39,9 @@ public class SearchController {
     public String search(@RequestParam(defaultValue = "") String q,
                          @RequestParam(defaultValue = "1") int page,
                          Model model) {
+
+        Pageable pageable = PageRequest.of(page, 10);
+
         UserPrincipal auth = null;
         if(SecurityUtil.isAuthenticated()) {
             auth = SecurityUtil.getCurrentUser();
@@ -43,11 +50,12 @@ public class SearchController {
             model.addAttribute("cart",cart);
             model.addAttribute("user",customerService.getByUserName(auth.getUsername()));
         }
-        int count = productService.count(q);
-        model.addAttribute("products", productService.list(q.trim(), page));
+        PageRequest pageRequest = PageRequest.of(page - 1, 10);
+        Page<Product> products = productService.findByProductNameAndBrandName(q.trim(), pageRequest);
+        model.addAttribute("products", productService.findByProductNameAndBrandName(q.trim(), pageRequest));
         model.addAttribute("brands", brandService.list());
         model.addAttribute("search", q);
-        model.addAttribute("totalPage", (count / 10 + (count % 10 > 0 ? 1 : 0)));
+        model.addAttribute("totalPage", products.getTotalPages());
         model.addAttribute("page", page);
         model.addAttribute("auth", auth);
         return "index";

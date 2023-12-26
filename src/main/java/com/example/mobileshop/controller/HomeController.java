@@ -9,6 +9,8 @@ import com.example.mobileshop.service.CustomerService;
 import com.example.mobileshop.service.ProductService;
 import com.example.mobileshop.utils.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,12 +46,11 @@ public class HomeController {
             model.addAttribute("cart",cart);
             model.addAttribute("user",customerService.getByUserName(auth.getUsername()));
         }
-        List<Product> products = productService.list("", page);
-
-        int count = productService.count("");
+        PageRequest pageRequest = PageRequest.of(page - 1, 10);
+        Page<Product> products = productService.findByProductNameAndBrandName("", pageRequest);
         model.addAttribute("products", products);
         model.addAttribute("brands", brandService.list());
-        model.addAttribute("totalPage", (count / 10 + (count % 10 > 0 ? 1 : 0)));
+        model.addAttribute("totalPage", products.getTotalPages());
         model.addAttribute("page", page);
         model.addAttribute("search", "");
         model.addAttribute("auth", auth);

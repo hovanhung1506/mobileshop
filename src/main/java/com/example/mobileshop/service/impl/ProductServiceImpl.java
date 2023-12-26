@@ -13,6 +13,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -81,7 +82,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public int count(String search) {
-        return productRepository.count(search);
+    public Page<Product> findByProductNameAndBrandName(String name, Pageable page) {
+        Page<ProductEntity> products = productRepository.findByProductNameAndBrandName(name, page);
+        return products.map(pro -> modelMapper.map(pro, Product.class));
     }
 }
