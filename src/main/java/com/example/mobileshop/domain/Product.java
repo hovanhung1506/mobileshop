@@ -10,5 +10,6 @@ public class Product {
     private int quantity;
     private String photo;
     private Long brandID;
+    private String brandName;
     private boolean isHidden;
 }

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tiki - Mua hàng online giá tốt, hàng chuẩn, ship nhanh</title>
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/user.css">
+    <link rel="stylesheet" href="/css/order.css">
+    <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+</head>
+
+<body>
+<div th:replace="header"></div>
+<main>
+    <div class="loading">
+        <span class="loader"></span>
+    </div>
+    <div class="nav">
+        <div class="avatar avatar-small">
+            <img th:src="${user.photo.startsWith('https://firebasestorage.googleapis.com') ? user.photo : '/' + user.photo}" alt="">
+            <p th:text="${user.name}"></p>
+        </div>
+        <ul class="profiles">
+            <li>
+                <i class="fa-solid fa-user"></i>
+                <span>Tài khoản của tôi</span>
+                <ul>
+                    <li class="profile">
+                        <a th:href="@{/user/profile}">Hồ sơ</a>
+                    </li>
+                    <li class="password">
+                        <a th:href="@{/user/password}">Đổi mật khẩu</a>
+                    </li>
+                    <li class="address">
+                        <a th:href="@{/user/address}">Địa chỉ</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="active">
+                <a th:href="@{/user/order}">
+                    <i class="fa-solid fa-envelope-open-text"></i>
+                    <span>Đơn mua</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="details">
+        <div class="title">
+            <p>Chi tiết đơn hàng</p>
+        </div>
+        <div>
+            <table>
+                <thead>
+                <tr>
+                    <th>Ảnh</th>
+                    <th>Tên sản phẩm</th>
+                    <th>Đơn giá</th>
+                    <th>Số lượng</th>
+                    <th>Thành tiền</th>
+                    <th>&nbsp;</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="details : ${orderDetails}">
+                    <td>
+                        <img th:src="${details.product.photo.startsWith('https://firebasestorage.googleapis.com')
+                                        ? details.product.photo
+                                        : '/' + details.product.photo}"
+                             style="width: 100px; height: 120px; object-fit: cover" alt="">
+                    </td>
+                    <td style="vertical-align:middle;" th:text="${details.product.name}">
+                    </td>
+                    <td style="vertical-align:middle;" th:attr="data-price=${details.price}"></td>
+                    <td style="vertical-align:middle;" th:text="${details.quantity}"></td>
+                    <td style="vertical-align:middle;" th:attr="data-price=${details.quantity * details.price}"></td>
+                    <td style="vertical-align:middle; text-align:center">
+                        <a class="btn btn-xs btn-primary"
+                           th:href="@{/product/{productName} (productName=${details.product.name.toLowerCase().replaceAll(' ','-')})}">
+                            <i class="fa fa-eye" aria-hidden="true"></i>
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<script src="/js/currencyVND.js"></script>
+<script>
+    currencyVND()
+</script>
+</body>
+
+</html>

@@ -8,5 +8,6 @@ public class OrderDetails {
     private Product product;
     private int price;
     private Long orderID;
+    private int quantity;
 
 }

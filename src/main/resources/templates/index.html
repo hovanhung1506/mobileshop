@@ -41,14 +41,21 @@
                     <li th:each="product : ${products}" class="product__item">
                         <a th:href="@{/product/{productName} (productName=${product.name.toLowerCase().replaceAll(' ','-')})}">
                             <div class="product__img">
-                                <img th:src="'/'+ ${product.photo}" alt="">
+                                <img th:src="${(product.photo == null)
+                                ? '/images/products/No-Image.png'
+                                : (product.photo.startsWith('https://firebasestorage.googleapis.com')
+                                ? product.photo
+                                : '/' + product.photo)}" alt="" style="height: 220px; object-fit: cover">
                             </div>
                             <div class="product__info">
                                 <span> <i class="fa-solid fa-circle-check"></i>
                                     OFFICIAL
                                 </span>
                                 <p class="product__title" th:text="${product.name}"></p>
-                                <p class="product__price" th:text="${product.price}"></p>
+                                <p class="product__price"
+                                   th:text="${product.price}"
+                                   th:attr="data-price=${product.price}"
+                                ></p>
                                 <p>
                                     <img src="/images/now.png" alt=""> <span>Giao siêu tốc 2h</span>
                                 </p>
@@ -71,6 +78,7 @@
     <span><i class="fa-solid fa-caret-up"></i></span>
 </div>
 
+<script src="/js/currencyVND.js"></script>
 <script src="/js/main.js"></script>
 <script src="/js/owlcarousel.js"></script>
 <script src="/js/pagination.js"></script>

@@ -51,8 +51,8 @@ public class SearchController {
             model.addAttribute("user",customerService.getByUserName(auth.getUsername()));
         }
         PageRequest pageRequest = PageRequest.of(page - 1, 10);
-        Page<Product> products = productService.findByProductNameAndBrandName(q.trim(), pageRequest);
-        model.addAttribute("products", productService.findByProductNameAndBrandName(q.trim(), pageRequest));
+        Page<Product> products = productService.findByProductNameOrBrandNameOrOrigin(q.trim(), pageRequest);
+        model.addAttribute("products", products);
         model.addAttribute("brands", brandService.list());
         model.addAttribute("search", q);
         model.addAttribute("totalPage", products.getTotalPages());

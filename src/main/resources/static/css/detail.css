@@ -129,7 +129,8 @@ main .wrapper {
 .quantity__input .form_group .btns {
   display: flex;
   margin-top: 6px;
-  gap: 4px;
+  gap: 10px;
+  align-items: center;
 }
 
 .quantity__input .form_group .btn {
@@ -173,6 +174,7 @@ input::-webkit-inner-spin-button {
   -moz-border-radius: 4px;
   -ms-border-radius: 4px;
   -o-border-radius: 4px;
+  padding: 7px 0;
 }
 
 .quantity__input .form_group input:focus {

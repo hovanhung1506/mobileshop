@@ -1,5 +1,7 @@
 const phoneEl = document.querySelector('#phone');
 const emailEl = document.querySelector('#email');
+const form = document.querySelector('#form');
+const loading = document.querySelector('.loading');
 
 function debounce(fn, delay) {
     let timer = null;
@@ -56,4 +58,12 @@ function imageExists(image_url, element) {
 const avatars = document.querySelectorAll('.avatar img')
 avatars.forEach((avatar) => {
     imageExists(avatar.getAttribute('src'), avatar)
+})
+
+form.addEventListener('submit', (e) => {
+    e.preventDefault()
+    loading.classList.add('active')
+    setTimeout(() => {
+        form.submit()
+    }, 1000)
 })

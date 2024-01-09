@@ -23,19 +23,21 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth ->
-                        auth.requestMatchers("/admin/**", "/cart/**", "/user/**")
-                                .hasAnyRole("ADMIN", "USER")
-                                .anyRequest()
-                                .permitAll())
-                .formLogin(form ->
-                        form.loginPage("/login")
-                                .loginProcessingUrl("/perform_login")
-                                .successHandler(authenticationSuccessHandler())
-                                .failureHandler(authenticationFailureHandler()))
-                .logout(logout ->
-                        logout.logoutUrl("/logout")
-                                .deleteCookies("JSESSIONID"));
+            .authorizeHttpRequests(auth ->
+                auth.requestMatchers("/cart/**", "/user/**", "/checkout/**")
+                    .hasAnyRole("ADMIN", "USER")
+                    .requestMatchers("admin/**")
+                    .hasRole("ADMIN")
+                    .anyRequest()
+                    .permitAll())
+            .formLogin(form ->
+                form.loginPage("/login")
+                    .loginProcessingUrl("/perform_login")
+                    .successHandler(authenticationSuccessHandler())
+                    .failureHandler(authenticationFailureHandler()))
+            .logout(logout ->
+                logout.logoutUrl("/logout")
+                    .deleteCookies("JSESSIONID"));
 
         return http.build();
     }

@@ -2,11 +2,18 @@ package com.example.mobileshop.controller;
 
 import com.example.mobileshop.domain.ApiResponse;
 import com.example.mobileshop.domain.Customer;
+import com.example.mobileshop.domain.Order;
 import com.example.mobileshop.security.UserPrincipal;
 import com.example.mobileshop.service.CartService;
 import com.example.mobileshop.service.CustomerService;
+import com.example.mobileshop.service.OrderDetailsService;
+import com.example.mobileshop.service.OrderService;
 import com.example.mobileshop.utils.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,6 +34,12 @@ public class UserController {
     @Autowired
     private CustomerService customerService;
 
+    @Autowired
+    private OrderDetailsService orderDetailsService;
+
+    @Autowired
+    private OrderService orderService;
+
     @GetMapping
     @PostMapping
     public String index() {
@@ -36,8 +49,8 @@ public class UserController {
 
     @GetMapping("profile")
     public String profilePage(Model model) {
-        UserPrincipal auth  = SecurityUtil.getCurrentUser();
-        model.addAttribute("role",  SecurityUtil.getCurrentRole().toString());
+        UserPrincipal auth = SecurityUtil.getCurrentUser();
+        model.addAttribute("role", SecurityUtil.getCurrentRole().toString());
         model.addAttribute("auth", auth);
         model.addAttribute("user", customerService.getByUserName(auth.getUsername()));
         model.addAttribute("cart", cartService.cart(auth.getId()));
@@ -47,28 +60,28 @@ public class UserController {
     @PostMapping("profile")
     public String profile(@ModelAttribute Customer customer,
                           RedirectAttributes redirect) {
-        UserPrincipal auth  = SecurityUtil.getCurrentUser();
+        UserPrincipal auth = SecurityUtil.getCurrentUser();
         Map<String, Object> errors = new HashMap<>();
         Map<String, Object> data = new HashMap<>();
 
         boolean flag = false;
 
-        if(customer.getName() == null || customer.getName().isEmpty()) {
+        if (customer.getName() == null || customer.getName().isEmpty()) {
             errors.put("name", "Họ tên không được để rỗng");
             flag = true;
         }
 
-        if(customer.getEmail() == null || customer.getEmail().isEmpty()) {
+        if (customer.getEmail() == null || customer.getEmail().isEmpty()) {
             errors.put("email", "Email không được để rỗng");
             flag = true;
-        }else if(customerService.getByEmail(customer.getEmail()) != null &&
-                !Objects.equals(customerService.getByEmail(customer.getEmail()).getId(), auth.getId())){
-            errors.put("email","Email này đã được sử dụng");
-            data.put("email",customer.getEmail());
+        } else if (customerService.getByEmail(customer.getEmail()) != null &&
+                !Objects.equals(customerService.getByEmail(customer.getEmail()).getId(), auth.getId())) {
+            errors.put("email", "Email này đã được sử dụng");
+            data.put("email", customer.getEmail());
             flag = true;
         }
 
-        if(customer.getPhone() == null || customer.getPhone().isEmpty()) {
+        if (customer.getPhone() == null || customer.getPhone().isEmpty()) {
             errors.put("phone", "Số điện thoại không được để rỗng");
             flag = true;
         } else if (customerService.getByPhone(customer.getPhone()) != null &&
@@ -78,13 +91,13 @@ public class UserController {
             flag = true;
         }
 
-        if(!flag) {
+        if (!flag) {
             customer.setId(auth.getId());
             customerService.update(customer);
-            redirect.addFlashAttribute("status","Cập nhật thông tin thành công!");
-        }else {
+            redirect.addFlashAttribute("status", "Cập nhật thông tin thành công!");
+        } else {
             data.put("name", customer.getName());
-            data.put("email",customer.getEmail());
+            data.put("email", customer.getEmail());
             data.put("phone", customer.getPhone());
             redirect.addFlashAttribute("data", data);
             redirect.addFlashAttribute("errors", errors);
@@ -94,8 +107,8 @@ public class UserController {
 
     @GetMapping("password")
     public String passwordPage(Model model) {
-        UserPrincipal auth  = SecurityUtil.getCurrentUser();
-        model.addAttribute("role",  SecurityUtil.getCurrentRole().toString());
+        UserPrincipal auth = SecurityUtil.getCurrentUser();
+        model.addAttribute("role", SecurityUtil.getCurrentRole().toString());
         model.addAttribute("auth", auth);
         model.addAttribute("user", customerService.getByUserName(auth.getUsername()));
         model.addAttribute("cart", cartService.cart(auth.getId()));
@@ -107,12 +120,12 @@ public class UserController {
                            @RequestParam String oldPassword,
                            @RequestParam String newPassword,
                            RedirectAttributes redirect) {
-        UserPrincipal auth  = SecurityUtil.getCurrentUser();
+        UserPrincipal auth = SecurityUtil.getCurrentUser();
 
-        if(!customerService.checkPassword(auth.getId(), oldPassword)) {
+        if (!customerService.checkPassword(auth.getId(), oldPassword)) {
             redirect.addFlashAttribute("status", "Mật khẩu cũ không đúng");
             return "redirect:/user/password";
-        }else {
+        } else {
             Customer customer = new Customer();
             customer.setId(auth.getId());
             customer.setPassword(newPassword);
@@ -126,7 +139,7 @@ public class UserController {
     @ResponseBody
     public ResponseEntity<?> changeImage(@RequestParam String photo) {
         ApiResponse<Object> res = new ApiResponse<>();
-        UserPrincipal auth  = SecurityUtil.getCurrentUser();
+        UserPrincipal auth = SecurityUtil.getCurrentUser();
         Customer customer = new Customer();
         customer.setId(auth.getId());
         customer.setPhoto(photo);
@@ -138,8 +151,8 @@ public class UserController {
 
     @GetMapping("address")
     public String addressPage(Model model) {
-        UserPrincipal auth  = SecurityUtil.getCurrentUser();
-        model.addAttribute("role",  SecurityUtil.getCurrentRole().toString());
+        UserPrincipal auth = SecurityUtil.getCurrentUser();
+        model.addAttribute("role", SecurityUtil.getCurrentRole().toString());
         model.addAttribute("auth", auth);
         model.addAttribute("user", customerService.getByUserName(auth.getUsername()));
         model.addAttribute("cart", cartService.cart(auth.getId()));
@@ -150,12 +163,40 @@ public class UserController {
     @ResponseBody
     public ResponseEntity<?> address(@RequestBody Customer customer) {
         ApiResponse<Object> res = new ApiResponse<>();
-        UserPrincipal auth  = SecurityUtil.getCurrentUser();
+        UserPrincipal auth = SecurityUtil.getCurrentUser();
         customer.setId(auth.getId());
         customerService.update(customer);
         res.setStatus("200");
         res.setMessage("Cập nhật địa chỉ mới thành công");
         return ResponseEntity.ok(res);
+    }
+
+    @GetMapping("order")
+    public String orderPage(Model model,
+                            @RequestParam(defaultValue = "1") int page) {
+        UserPrincipal auth = SecurityUtil.getCurrentUser();
+        model.addAttribute("role", SecurityUtil.getCurrentRole().toString());
+        model.addAttribute("auth", auth);
+        model.addAttribute("user", customerService.getByUserName(auth.getUsername()));
+        model.addAttribute("cart", cartService.cart(auth.getId()));
+
+        int pageSize = 9;
+        Pageable pageable = PageRequest.of(page - 1, pageSize, Sort.by("orderDate").descending());
+        Page<Order> orders = orderService.findAllByCustomerID(auth.getId(), pageable);
+        model.addAttribute("orders", orders);
+        return "user/order";
+    }
+
+    @GetMapping("order/{orderId}")
+    public String getOrderPage(Model model, @PathVariable Long orderId) {
+        UserPrincipal auth = SecurityUtil.getCurrentUser();
+        model.addAttribute("role", SecurityUtil.getCurrentRole().toString());
+        model.addAttribute("auth", auth);
+        model.addAttribute("user", customerService.getByUserName(auth.getUsername()));
+        model.addAttribute("cart", cartService.cart(auth.getId()));
+
+        model.addAttribute("orderDetails", orderDetailsService.findByOrderId(orderId));
+        return "user/orderDetails";
     }
 
 }

@@ -8,8 +8,8 @@ import java.time.LocalDateTime;
 public class Order {
     private Long id;
     private LocalDateTime orderDate;
-    private boolean isPaid;
     private LocalDateTime paymentDate;
     private String status;
-    private Long customerID;
+    private Customer customer;
+    private Long total;
 }

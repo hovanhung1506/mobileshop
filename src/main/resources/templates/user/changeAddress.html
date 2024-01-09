@@ -20,7 +20,7 @@
 <main>
     <div class="nav">
         <div class="avatar">
-            <img th:src="${user.photo}" alt="">
+            <img th:src="${!user.photo.startsWith('https:') ? '/' + user.photo : user.photo}" alt="">
             <p th:text="${user.name}"></p>
         </div>
         <ul class="profiles">
@@ -40,7 +40,7 @@
                 </ul>
             </li>
             <li>
-                <a href="#">
+                <a th:href="@{/user/order}">
                     <i class="fa-solid fa-envelope-open-text"></i>
                     <span>Đơn mua</span>
                 </a>
@@ -58,11 +58,11 @@
                     <p class="phone" th:text="${user.phone}"></p>
                 </div>
                 <div class="address">
-                    <p th:text="${user.address}">Xã Thủy Thanh, Thị Xã Hương Thủy, Thừa Thiên Huế</p>
+                    <p th:text="${user.address}"></p>
 
                     <div class="new-address">Thay đổi địa chỉ mới</div>
 
-                    <form id="addressForm" method="post">
+                    <form id="form" method="post">
                         <div>
                             <div class="form-group">
                                 <select name="province" id="province" onchange="changeProvince()"

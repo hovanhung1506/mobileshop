@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
-
 @Controller
 @RequestMapping("/")
 public class HomeController {
@@ -47,7 +45,7 @@ public class HomeController {
             model.addAttribute("user",customerService.getByUserName(auth.getUsername()));
         }
         PageRequest pageRequest = PageRequest.of(page - 1, 10);
-        Page<Product> products = productService.findByProductNameAndBrandName("", pageRequest);
+        Page<Product> products = productService.findByProductNameOrBrandNameOrOrigin("", pageRequest);
         model.addAttribute("products", products);
         model.addAttribute("brands", brandService.list());
         model.addAttribute("totalPage", products.getTotalPages());

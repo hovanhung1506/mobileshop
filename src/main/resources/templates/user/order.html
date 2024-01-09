@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tiki - Mua hàng online giá tốt, hàng chuẩn, ship nhanh</title>
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/user.css">
+    <link rel="stylesheet" href="/css/order.css">
+    <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+</head>
+
+<body>
+<div th:replace="header"></div>
+<main>
+    <div class="loading">
+        <span class="loader"></span>
+    </div>
+    <div class="nav">
+        <div class="avatar avatar-small">
+            <img th:src="${user.photo.startsWith('https://firebasestorage.googleapis.com') ? user.photo : '/' + user.photo}" alt="">
+            <p th:text="${user.name}"></p>
+        </div>
+        <ul class="profiles">
+            <li>
+                <i class="fa-solid fa-user"></i>
+                <span>Tài khoản của tôi</span>
+                <ul>
+                    <li class="profile">
+                        <a th:href="@{/user/profile}">Hồ sơ</a>
+                    </li>
+                    <li class="password">
+                        <a th:href="@{/user/password}">Đổi mật khẩu</a>
+                    </li>
+                    <li class="address">
+                        <a th:href="@{/user/address}">Địa chỉ</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="active">
+                <a th:href="@{/user/order}">
+                    <i class="fa-solid fa-envelope-open-text"></i>
+                    <span>Đơn mua</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="details">
+        <div class="title">
+            <p>Đơn Hàng Của Tôi</p>
+        </div>
+        <div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Ngày đặt hàng</th>
+                        <th>Ngày thanh toán</th>
+                        <th>Tổng tiền</th>
+                        <th>Trạng thái</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="order : ${orders}">
+                        <td th:text="${order.id}"></td>
+                        <td>
+                            <span th:text="${#temporals.format(order.orderDate, 'HH:mm:ss')}"></span> &nbsp;
+                            <span th:text="${#temporals.format(order.orderDate, 'dd-MM-yyyy')}"></span>
+                        </td>
+                        <td>
+                            <span th:if="${order.paymentDate == null}">Chờ thanh toán</span>
+                            <span th:if="${order.paymentDate != null}"
+                                  th:text="${#temporals.format(order.paymentDate, 'HH:mm:ss')}">
+                            </span> &nbsp;
+                            <span th:if="${order.paymentDate != null}"
+                                  th:text="${#temporals.format(order.paymentDate, 'dd-MM-yyyy')}">
+                            </span>
+                        </td>
+                        <td th:attr="data-price=${order.total}"></td>
+                        <td th:text="${order.status}"></td>
+                        <td>
+                            <a th:href="@{/user/order/{orderID} (orderID=${order.id})}">
+                                <i class="fa-solid fa-eye"></i>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <ul class="pagination">
+            </ul>
+        </div>
+    </div>
+</main>
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+
+<script>
+    function paginate(list) {
+        list.forEach((li) => {
+            li.addEventListener('click', () => {
+                window.location.href = li.querySelector('a').dataset.href;
+            })
+        })
+    }
+</script>
+<script src="/js/pagination2.js"></script>
+<script src="/js/currencyVND.js"></script>
+<script type="text/javascript" th:inline="javascript">
+    let totalPage = /*[[${orders.getTotalPages()}]]*/ 1;
+    let currentPage = /*[[${orders.getNumber() + 1}]]*/ 1;
+    totalPage = !totalPage ? 1 : totalPage;
+    currentPage = !currentPage ? 1 : currentPage;
+    pagination2(totalPage, currentPage);
+    currencyVND()
+</script>
+</body>
+
+</html>

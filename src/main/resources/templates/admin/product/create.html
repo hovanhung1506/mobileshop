@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title th:text="'Tiki - ' + ${title}"></title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- <link rel="stylesheet" href="/themes/bower_components/Ionicons/css/ionicons.min.css"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.4.8/css/AdminLTE.min.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.4.8/css/skins/_all-skins.min.css">
+    <!-- Google Font -->
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon">
+    <style>
+        .error-message {
+            margin: 0;
+            color: red;
+        }
+
+        .loader {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            position: relative;
+            animation: rotate 1s linear infinite
+        }
+        .loader::before {
+            content: "";
+            box-sizing: border-box;
+            position: absolute;
+            inset: 0px;
+            border-radius: 50%;
+            border: 5px solid #FFF;
+            animation: prixClipFix 2s linear infinite ;
+        }
+
+        @keyframes rotate {
+            100%   {transform: rotate(360deg)}
+        }
+
+        @keyframes prixClipFix {
+            0%   {clip-path:polygon(50% 50%,0 0,0 0,0 0,0 0,0 0)}
+            25%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 0,100% 0,100% 0)}
+            50%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,100% 100%,100% 100%)}
+            75%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,0 100%,0 100%)}
+            100% {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,0 100%,0 0)}
+        }
+        .loading {
+            position: fixed;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            z-index: 99;
+            background: #80808075;
+            display: none;
+            height: 100vh;
+        }
+        .loading.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="loading">
+    <span class="loader"></span>
+</div>
+<div class="wrapper">
+    <!-- Header -->
+    <header class="main-header">
+        <!-- Logo -->
+        <a th:href="@{/admin}" class="logo">
+            <!-- mini logo for sidebar mini 50x50 pixels -->
+            <span class="logo-mini"><b>Shop</b></span>
+            <!-- logo for regular state and mobile devices -->
+            <span class="logo-lg"><b>Mobile </b>Shop</span>
+        </a>
+        <!-- Header Navbar: style can be found in header.less -->
+        <nav class="navbar navbar-static-top">
+            <!-- Sidebar toggle button-->
+            <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+                <span class="sr-only">Toggle navigation</span>
+            </a>
+
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+                    <!-- Messages: style can be found in dropdown.less-->
+                    <!-- User Account: style can be found in dropdown.less -->
+                    <li class="dropdown user user-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <img src="/images/blank-profile.png" class="user-image"
+                                 alt="User Image">
+                            <span class="hidden-xs" th:text="${user.name}"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <!-- User image -->
+                            <li class="user-header">
+                                <img src="/images/blank-profile.png" class="img-circle"
+                                     alt="User Image">
+                                <p th:text="${user.name}"></p>
+                            </li>
+                            <!-- Menu Footer-->
+                            <li class="user-footer">
+                                <!--                                <div class="pull-left">-->
+                                <!--                                    <a href="~/account/changepassword"-->
+                                <!--                                       class="btn btn-default btn-flat">Đổi mật khẩu</a>-->
+                                <!--                                </div>-->
+                                <div class="pull-right">
+                                    <a th:href="@{/logout}" class="btn btn-default btn-flat">Thoát</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <!-- End Header -->
+
+
+    <!-- SideBar -->
+    <aside class="main-sidebar">
+        <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar">
+            <!-- sidebar menu: : style can be found in sidebar.less -->
+            <ul class="sidebar-menu" data-widget="tree">
+                <li><a href="/"><span>Trang chủ</span></a></li>
+                <li class="active treeview">
+                    <a href="#">
+                        <span>Quản lý dữ liệu</span>
+                        <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a th:href="@{/admin/customer}">Khách hàng</a></li>
+                        <li class="active"><a th:href="@{/admin/brand}">Thương hiệu</a></li>
+                        <li><a th:href="@{/admin/product}">Sản phẩm</a></li>
+                    </ul>
+                </li>
+                <li class="active treeview">
+                    <a href="#">
+                        <span>Bán hàng</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a th:href="@{/admin/order}">Tra cứu đơn hàng</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </section>
+    </aside>
+    <!-- EndSideBar -->
+
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1 th:text="${title}"></h1>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+
+            <div class="box box-primary">
+                <div class="box-header with-border ">
+                </div>
+
+                <div class="box-body">
+                    <form id="form1" class="form-horizontal" th:action="@{/admin/product/save}"
+                          method="post">
+                        <input type="hidden" name="id" th:value="${product.id}" />
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Tên sản phẩm:</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="name"
+                                       th:value="${product.name}" autofocus>
+                                <p class="error-message" th:text="${errors != null ? errors['name'] : ''}"></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Giá:</label>
+                            <div class="col-sm-10">
+                                <input type="number" class="form-control" name="price"
+                                       th:value="${product.price}" min="1000">
+                                <p class="error-message" th:text="${errors != null ? errors['price'] : ''}"></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Số lượng:</label>
+                            <div class="col-sm-10">
+                                <input type="number" class="form-control" name="quantity"
+                                       th:value="${product.quantity < 1 ? 1 : product.quantity}" min="1">
+                                <p class="error-message" th:text="${errors != null ? errors['quantity'] : ''}"></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Thương hiệu:</label>
+                            <div class="col-sm-10">
+                                <select class="form-control" name="brandID">
+                                    <option value="0" disabled selected
+                                            th:if="${product.brandID == null}"
+                                    >-- Chọn thương hiệu --</option>
+                                    <option th:each="brand : ${brands}"
+                                            th:value="${brand.id}"
+                                            th:text="${brand.name}"
+                                            th:selected="${product.brandID != null && product.brandID == brand.id}"
+                                    >
+                                    </option>
+                                 </select>
+                                <p class="error-message" th:text="${errors != null ? errors['brand'] : ''}"></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Ảnh minh họa:</label>
+                            <div class="col-sm-10">
+                                <input type="hidden" name="photo" th:value="${product.photo}"/>
+                                <input type="file" class="form-control" name="uploadPhoto" id="fileInp"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-offset-2 col-sm-10">
+                                <img th:src="${(product.photo == null)
+                                ? '/images/products/No-Image.png'
+                                : (product.photo.startsWith('https://firebasestorage.googleapis.com')
+                                ? product.photo
+                                : '/' + product.photo)}"
+                                     class="img img-bordered imagePreview" style="width:200px" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fa fa-save"></i>&nbsp; Lưu dữ liệu
+                                </button>
+                                <a class="btn btn-warning" th:href="@{/admin/product}">
+                                    <i class="fa fa-ban"></i>&nbsp; Quay lại
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="box-footer text-center">
+                </div>
+
+                <div class="box box-success" th:if="${product.id != 0}">
+                    <div class="box-header with-border ">
+                        <h3 class="box-title">Thông số kỹ thuật</h3>
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"
+                                    data-toggle="tooltip" title="" data-original-title="Collapse">
+                                <i class="fa fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-body" th:if="${product.id != 0}">
+                    <form id="form2" class="form-horizontal" th:action="@{/admin/spec}" method="post">
+                        <input type="hidden" name="productId" th:value="${product.id}" />
+                        <input type="hidden" name="id" th:value="${spec.id}">
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Camera sau:</label>
+                            <div class="col-sm-10">
+                                <textarea name="rearCamera" rows="3" class="col-xs-12 form-control"
+                                          style="resize: none" th:text="${spec.rearCamera}"></textarea>
+                                <p class="error-message"></p>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Camera trước:</label>
+                            <div class="col-sm-10">
+                                <textarea name="frontCamera" rows="3" class="col-xs-12 form-control"
+                                          style="resize: none" th:text="${spec?.frontCamera}"></textarea>
+                                <p class="error-message"></p>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Chip set:</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="chipset"
+                                       th:value="${spec?.chipset}">
+                                <p class="error-message"></p>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Loại CPU:</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="cpuType"
+                                       th:value="${spec?.cpuType}">
+                                <p class="error-message"></p>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Kích thước:</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="size"
+                                       th:value="${spec?.size}">
+                                <p class="error-message"></p>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Loại / Công nghệ màn hình:</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="screenType"
+                                       th:value="${spec?.screenType}">
+                                <p class="error-message"></p>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Kích thước màn hình:</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="screenSize"
+                                       th:value="${spec?.screenSize}">
+                                <p class="error-message"></p>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Độ phân giải màn hình:</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="screenResolution"
+                                       th:value="${spec?.screenResolution}">
+                                <p class="error-message"></p>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Sim:</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="sim"
+                                       th:value="${spec?.sim}">
+                                <p class="error-message"></p>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Pin:</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="pin"
+                                       th:value="${spec?.pin}">
+                                <p class="error-message"></p>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">RAM:</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="ramCapacity"
+                                       th:value="${spec?.ramCapacity}">
+                                <p class="error-message"></p>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Bộ nhớ trong:</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="storageCapacity"
+                                       th:value="${spec?.storageCapacity}">
+                                <p class="error-message"></p>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Hệ điều hành:</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="os"
+                                       th:value="${spec?.os}">
+                                <p class="error-message"></p>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fa fa-save"></i>&nbsp; Lưu dữ liệu
+                                </button>
+                                <a class="btn btn-warning" th:href="@{/admin/product}">
+                                    <i class="fa fa-ban"></i>&nbsp; Quay lại
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="box-footer text-center">
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="pull-right hidden-xs">
+            <b>Version</b> 2.4.0
+        </div>
+        <strong>Copyright &copy; 2014-2016 <a href="https://adminlte.io">Almsaeed Studio</a>.</strong> All
+        rights
+        reserved.
+    </footer>
+    <!-- End footer -->
+</div>
+<script src="https://www.gstatic.com/firebasejs/6.0.2/firebase.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<!-- AdminLTE App -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.4.8/js/adminlte.min.js"></script>
+<script src="/js/uploadImageProduct.js"></script>
+
+<script>
+    const form2 = document.querySelector('#form2')
+    form2.addEventListener('submit', (e) => {
+        e.preventDefault()
+        const loading = document.querySelector('.loading')
+        loading.classList.add('active')
+        setTimeout(() => {
+            form2.submit()
+        }, 1000)
+    })
+</script>
+</body>
+
+</html>

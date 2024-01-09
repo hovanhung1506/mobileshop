@@ -1,26 +1,26 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tiki - Mua hàng online giá tốt, hàng chuẩn, ship nhanh</title>
-<link rel="stylesheet" href="/css/reset.css">
-<link rel="stylesheet" href="/css/header.css">
-<link rel="stylesheet" href="/css/user.css">
-<link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tiki - Mua hàng online giá tốt, hàng chuẩn, ship nhanh</title>
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/user.css">
+    <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 </head>
 
 <body>
 <div th:replace="header"></div>
-<script th:if="${status != null}" th:inline="javascript">
-    let message = /*[[${status}]]*/ ""
-    alert(message)
-</script>
 <main>
+    <div class="loading">
+        <span class="loader"></span>
+    </div>
     <div class="nav">
         <div class="avatar avatar-small">
-            <img th:src="${user.photo}" alt="">
+            <img th:src="${user.photo.startsWith('https://firebasestorage.googleapis.com') ? user.photo : '/' + user.photo}" alt="">
             <p th:text="${user.name}"></p>
         </div>
         <ul class="profiles">
@@ -40,7 +40,7 @@
                 </ul>
             </li>
             <li>
-                <a href="#">
+                <a th:href="@{/user/order}">
                     <i class="fa-solid fa-envelope-open-text"></i>
                     <span>Đơn mua</span>
                 </a>
@@ -85,7 +85,7 @@
                 </form>
             </div>
             <div class="avatar">
-                <img class="imagePreview" th:src="${user.photo}" alt="">
+                <img class="imagePreview" th:src="${user.photo.startsWith('https://firebasestorage.googleapis.com') ? user.photo : '/' + user.photo}" alt="">
                 <label for="fileInp">Chọn Ảnh</label>
                 <input type="file" id="fileInp" accept="image/*">
                 <button class="saveImage not-allowed">
@@ -97,8 +97,14 @@
 </main>
 <script src="https://www.gstatic.com/firebasejs/6.0.2/firebase.js"></script>
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-<script src="/js/uploadImage.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<script src="/js/toastify.js"></script>
+<script src="/js/uploadImageUser.js"></script>
 <script src="/js/profile.js"></script>
+<script th:if="${status != null}" th:inline="javascript">
+    let message = /*[[${status}]]*/ ""
+    showToast(message)
+</script>
 </body>
 
 </html>

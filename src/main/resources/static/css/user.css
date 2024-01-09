@@ -1,5 +1,7 @@
 @import url(https://fonts.googleapis.com/css?family=Inter:100,200,300,regular,500,600,700,800,900);
 
+
+
 :root {
     --primary-color: #0a68ff;
     --text-color: #808089;
@@ -15,9 +17,8 @@ body {
 }
 
 main {
-    margin: 0 auto;
-    width: 1200px;
-    margin-top: 88px;
+    width: 1280px;
+    margin: 88px auto 0;
     padding-top: 20px;
     display: flex;
     gap: 40px;
@@ -50,7 +51,7 @@ main {
     color: #565656;
 }
 
-.nav .profiles ul li.active {
+.nav .profiles li.active {
     color: #ef4d2d;
     text-transform: capitalize;
 }
@@ -341,4 +342,49 @@ main {
 .error-message {
     font-size: 1.4rem;
     color: red;
+}
+
+.loader {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    position: relative;
+    animation: rotate 1s linear infinite
+}
+.loader::before {
+    content: "";
+    box-sizing: border-box;
+    position: absolute;
+    inset: 0px;
+    border-radius: 50%;
+    border: 5px solid #FFF;
+    animation: prixClipFix 2s linear infinite ;
+}
+
+@keyframes rotate {
+    100%   {transform: rotate(360deg)}
+}
+
+@keyframes prixClipFix {
+    0%   {clip-path:polygon(50% 50%,0 0,0 0,0 0,0 0,0 0)}
+    25%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 0,100% 0,100% 0)}
+    50%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,100% 100%,100% 100%)}
+    75%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,0 100%,0 100%)}
+    100% {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,0 100%,0 0)}
+}
+.loading {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 99;
+    background: #80808075;
+    display: none;
+    height: 100vh;
+}
+.loading.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

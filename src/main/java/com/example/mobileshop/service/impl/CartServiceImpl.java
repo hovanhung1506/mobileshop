@@ -113,19 +113,24 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public void delete(Long productID, Long customerID) {
+    public void deleteByProductIDAndCustomerID(Long productID, Long customerID) {
         CustomerEntity customerEntity = customerRepository.findById(customerID).orElse(null);
         CartEntity cartEntity = cartRepository.findByCustomerEntity(customerEntity);
         ProductEntity productEntity = productRepository.findById(productID).orElse(null);
         cartItemRepository.delete(cartItemRepository.findByCartEntityAndProductEntity(cartEntity, productEntity));
+//        Cart cart = cart(customerID);
+//        if(cart.getCartItems().isEmpty()) {
+//            cartRepository.delete(cartEntity);
+//        }
     }
 
     @Override
-    public void deleteAll(Long customerID) {
+    public void deleteAllByCustomerID(Long customerID) {
         CustomerEntity customerEntity = customerRepository.findById(customerID).orElse(null);
         CartEntity cartEntity = cartRepository.findByCustomerEntity(customerEntity);
         List<CartItemEntity> cartItemEntities = cartEntity.getCartItemEntities();
         cartItemRepository.deleteAll(cartItemEntities);
+        cartRepository.delete(cartEntity);
     }
 
     public void addCartItem(Product product, CartEntity cartEntity) {

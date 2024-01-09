@@ -9,6 +9,8 @@ import com.example.mobileshop.service.CustomerService;
 import com.example.mobileshop.utils.SecurityUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -32,18 +34,18 @@ public class CustomerServiceImpl implements CustomerService {
     public Customer create(Customer customer) {
         CustomerEntity entity = modelMapper.map(customer, CustomerEntity.class);
         if(entity.getPhoto() == null) {
-            entity.setRole("/images/blank-profile.png");
+            entity.setRole("images/blank-profile.png");
         }
         entity.setRole("ROLE_USER");
         entity.setPassword(passwordEncoder.encode(entity.getPassword()));
-        entity.setPhoto("/images/blank-profile.png");
+        entity.setPhoto("images/blank-profile.png");
         entity = customerRepository.save(entity);
         return modelMapper.map(entity, Customer.class);
     }
 
     @Override
     public Customer getByUserName(String username) {
-        CustomerEntity entity = customerRepository.findByUsernameIgnoreCase(username).orElse(null);
+        CustomerEntity entity = customerRepository.findByUsername(username).orElse(null);
         return entity == null ? null : modelMapper.map(entity, Customer.class);
     }
 
@@ -61,7 +63,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer getByUserNameAndPassword(String username, String password) {
-        CustomerEntity entity = customerRepository.findByUsernameIgnoreCase(username).orElse(null);
+        CustomerEntity entity = customerRepository.findByUsername(username).orElse(null);
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 //        System.out.println(entity != null && encoder.matches(password, entity.getPassword()));
         if(entity != null && !encoder.matches(password, entity.getPassword())) {
@@ -103,5 +105,16 @@ public class CustomerServiceImpl implements CustomerService {
         CustomerEntity entity = customerRepository.findById(customerID).orElse(null);
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         return entity != null && encoder.matches(oldPassword, entity.getPassword());
+    }
+
+    @Override
+    public Page<Customer> findAllByNameOrAddressOrEmailOrPhone(String search, Pageable pageable) {
+        Page<CustomerEntity> entities = customerRepository.findAllByNameContainsOrAddressContainsOrEmailContainingOrPhoneContaining(search, search, search, search, pageable);
+        return entities.map(customer -> modelMapper.map(customer, Customer.class));
+    }
+
+    @Override
+    public Customer getById(Long customerID) {
+        return modelMapper.map(customerRepository.findById(customerID), Customer.class);
     }
 }

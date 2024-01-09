@@ -2,7 +2,7 @@ const selProvinceEl = document.getElementById('province');
 const selDistrictEl = document.getElementById('district');
 const selWardEl = document.getElementById('ward');
 const host = 'https://provinces.open-api.vn/api';
-const addressForm = document.getElementById('addressForm');
+const form = document.getElementById('form');
 const specificAddressEl = document.querySelector('input[name="specific-address"]');
 
 const fetchAPI = async (url) => {
@@ -62,7 +62,7 @@ const changeWard = () => {
     ward.change(changeWard);
 })();
 
-addressForm.addEventListener('submit', async function (e) {
+form.addEventListener('submit', async function (e) {
     const provinceEl = selProvinceEl.options[selProvinceEl.selectedIndex];
     const districtEl = selDistrictEl.options[selDistrictEl.selectedIndex];
     const wardEl = selWardEl.options[selWardEl.selectedIndex];

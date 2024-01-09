@@ -1,7 +1,7 @@
 const header = document.querySelector('header');
 const backToTop = document.querySelector('.backToTop');
-const listProductPrice = document.querySelectorAll('.product__list .product__price');
 
+currencyVND()
 
 function debounce(fn, ms) {
     let timer;
@@ -36,27 +36,6 @@ window.addEventListener(
     }, 200)
 );
 
-
-listProductPrice.forEach((item) => {
-    let price = item.textContent.trim();
-    item.innerHTML = currencyFormatter(price);
-})
-
-function currencyFormatter(p) {
-    p = p + '';
-    let s = '', count = 0;
-    for (let i = p.length - 1; i >= 0; i--) {
-        count++;
-        s += p[i];
-        if (count === 3 && i !== 0) {
-            s += '.';
-            count = 0;
-        }
-    }
-
-    s = s.split('').reverse().join('');
-    return s + '<sup>₫</sup>';
-}
 
 
 backToTop.addEventListener('click', function () {

@@ -1,7 +1,6 @@
 package com.example.mobileshop.controller;
 
 
-import com.example.mobileshop.domain.ApiResponse;
 import com.example.mobileshop.domain.Cart;
 import com.example.mobileshop.domain.Product;
 import com.example.mobileshop.security.UserPrincipal;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -59,7 +57,7 @@ public class CartController {
                 res.put("message","Cập nhật số lượng thành công.");
             }
             case "delete" -> {
-                cartService.delete(productId, customerId);
+                cartService.deleteByProductIDAndCustomerID(productId, customerId);
             }
             default -> {
                 res.put("status","ERROR");
@@ -78,14 +76,14 @@ public class CartController {
         Map<Object, Object> res = new HashMap<>();
         switch (action) {
             case "delete" -> {
-                cartService.delete(productId, customerId);
+                cartService.deleteByProductIDAndCustomerID(productId, customerId);
                 Cart cart = cartService.cart(customerId);
                 res.put("status","OK");
                 res.put("message","Xóa sản phẩm thành công");
                 res.put("quantity",cart.getCartItems().size());
             }
             case "delete-all" -> {
-                cartService.deleteAll(customerId);
+                cartService.deleteAllByCustomerID(customerId);
                 res.put("status","OK");
                 res.put("message","Xóa tất cả sản phẩm thành công");
             }

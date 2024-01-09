@@ -1,10 +1,13 @@
 package com.example.mobileshop.service.impl;
 
 import com.example.mobileshop.domain.Brand;
+import com.example.mobileshop.entity.BrandEntity;
 import com.example.mobileshop.repository.BrandRepository;
 import com.example.mobileshop.service.BrandService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,12 +31,35 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public Brand getByName(String name) {
-        return modelMapper.map(brandRepository.findByNameContainingIgnoreCase(name), Brand.class);
+    public Brand getById(Long id) {
+        return modelMapper.map(brandRepository.findById(id).orElse(null), Brand.class);
     }
 
     @Override
-    public Brand getById(Long id) {
-        return modelMapper.map(brandRepository.findById(id).orElse(null), Brand.class);
+    public Page<Brand> findAllByNameOrOrigin(String name, Pageable page) {
+        Page<BrandEntity> list = brandRepository.findAllByNameContainingOrOriginContaining(name, name, page);
+        return list.map(brand -> modelMapper.map(brand, Brand.class));
+    }
+
+    @Override
+    public Brand save(Brand brand) {
+        BrandEntity entity = modelMapper.map(brand, BrandEntity.class);
+        entity = brandRepository.save(entity);
+        return modelMapper.map(entity, Brand.class);
+    }
+
+    @Override
+    public boolean inUsed(Long brandID) {
+        return brandRepository.isUsed(brandID);
+    }
+
+    @Override
+    public void delete(Long brandID) {
+        brandRepository.deleteById(brandID);
+    }
+
+    @Override
+    public Brand findByName(String name) {
+        return modelMapper.map(brandRepository.findByNameIgnoreCase(name), Brand.class);
     }
 }

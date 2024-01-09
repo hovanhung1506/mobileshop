@@ -45,7 +45,7 @@ public class ProductController {
             model.addAttribute("user", customerService.getByUserName(auth.getUsername()));
         }
 
-        Product product = productService.get(productName.trim());
+        Product product = productService.findByName(productName.trim());
         Brand brand = brandService.getById(product.getBrandID());
         model.addAttribute("product", product);
         model.addAttribute("brand", brand);

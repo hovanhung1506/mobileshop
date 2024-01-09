@@ -23,7 +23,7 @@ public class CustomUserDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        CustomerEntity entity = customerRepository.findByUsernameIgnoreCase(username)
+        CustomerEntity entity = customerRepository.findByUsername(username)
                 .orElseThrow(() -> new BadCredentialsException("Username not found"));
         UserPrincipal principal = new UserPrincipal();
         principal.setId(entity.getId());

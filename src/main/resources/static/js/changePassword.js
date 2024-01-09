@@ -2,6 +2,7 @@ const oldPasswordInput = document.querySelector('#old-password');
 const newPasswordInput = document.querySelector('#new-password');
 const rePasswordInput = document.querySelector('#re-password')
 const form = document.querySelector('#form');
+const loading = document.querySelector('.loading');
 
 form.addEventListener('submit', function(e) {
     e.preventDefault();
@@ -52,6 +53,9 @@ form.addEventListener('submit', function(e) {
     }
 
     if(!flag) {
-        form.submit();
+        loading.classList.add('active')
+        setTimeout(() => {
+            form.submit();
+        }, 1000)
     }
 })

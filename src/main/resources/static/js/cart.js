@@ -221,21 +221,3 @@ btnDeleteAll.addEventListener('click', function () {
         })
     }
 })
-
-btnOrder.addEventListener('click', function () {
-    if (confirm('Xác nhận đặt mua') === true) {
-        $.ajax({
-            url: '/TikiClone/cart-ajax',
-            type: 'POST',
-            data: {
-                action: "ordered"
-            },
-            success: function () {
-                window.location.href = 'home';
-            },
-            error: function () {
-                alert("error");
-            }
-        })
-    }
-})

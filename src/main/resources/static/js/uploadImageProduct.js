@@ -11,8 +11,9 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 const fileInp = document.querySelector('#fileInp')
-const saveImage = document.querySelector('.saveImage')
-let oldImageURL
+const form = document.querySelector('#form1')
+const loading = document.querySelector('.loading')
+let oldImageURL = ""
 let fileItem;
 let fileName;
 
@@ -20,22 +21,12 @@ function getFile(e) {
     oldImageURL = document.querySelector('.imagePreview').src;
     fileItem = e.target.files[0];
     fileName = Date.now() + '-' + fileItem.name;
-    const reader = new FileReader();
-    reader.onload = () => {
-        let imagePreview = document.querySelector('.imagePreview');
-        imagePreview.src = reader.result;
-    };
-    reader.readAsDataURL(fileItem);
-    const btnSaveImage = document.querySelector('.details .content .avatar button');
-    btnSaveImage.classList.remove('not-allowed');
+    let imagePreview = document.querySelector('.imagePreview');
+    imagePreview.src = window.URL.createObjectURL(fileItem)
 }
-
 fileInp.addEventListener('change', (e) => getFile(e));
+
 function uploadImage() {
-    if (fileItem == null) {
-        console.log('image not found');
-        return;
-    }
 
     if(oldImageURL.startsWith('https://firebasestorage.googleapis.com')) {
         deleteImage(oldImageURL)
@@ -47,21 +38,26 @@ function uploadImage() {
     uploadTask.on(
         'state_changed',
         (snapshot) => {},
-        (error) => {
-            console.log('Error is', error);
-        },
+        (error) => { console.log('Error is', error); },
         () => {
             uploadTask.snapshot.ref.getDownloadURL().then((url) => {
-                // console.log('URL', url);
-                let imagePreview = document.querySelector('.imagePreview');
-                imagePreview.setAttribute('src', url);
-                saveImageAPI(url)
+                let imageField = document.querySelector('input[name="photo"]');
+                imageField.setAttribute('value', url);
+                form.submit();
             });
         }
     );
 }
 
-saveImage.addEventListener('click', () => uploadImage())
+form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    loading.classList.add('active')
+    if(fileItem !== undefined)
+        uploadImage()
+    else {
+        form.submit();
+    }
+})
 
 function deleteImage(urlImage) {
     const desertRef = firebase.storage().refFromURL(urlImage);
@@ -73,23 +69,4 @@ function deleteImage(urlImage) {
         .catch((error) => {
             console.log('Delete failed: ', error);
         });
-}
-
-function saveImageAPI(url) {
-    $.ajax({
-        url: 'http://localhost:8080/user/change-image',
-        type: 'POST',
-        data: {
-            photo: url
-        },
-        success: function (data) {
-            if(data.status === "200") {
-                document.querySelector('.avatar-small img').setAttribute('src', url);
-                alert(`${data.message}`)
-            }
-        },
-        error: function (err) {
-            console.log(err)
-        }
-    })
 }

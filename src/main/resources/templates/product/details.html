@@ -18,7 +18,11 @@
         <div class="wrapper">
             <div class="product">
                 <div class="product__img">
-                    <img th:src="'/' + ${product.photo}" alt="">
+                    <img th:src="${(product.photo == null)
+                                ? '/images/products/No-Image.png'
+                                : (product.photo.startsWith('https://firebasestorage.googleapis.com')
+                                ? product.photo
+                                : '/' + product.photo)}" alt="" style="height: 366px; object-fit: cover">
                 </div>
             </div>
             <div class="specifications">
@@ -36,7 +40,10 @@
                             </span>
                         <p th:text="${product.name}"></p>
                     </div>
-                    <div class="price" th:text="${product.price}"></div>
+                    <div class="price"
+                         th:text="${product.price}"
+                         th:attr="data-price=${product.price}"
+                    ></div>
                 </div>
                 <div class="details">
                     <h3>Thông tin chi tiết</h3>
@@ -82,20 +89,12 @@
                             <span th:text="${spec.screenResolution}"></span>
                         </li>
                         <li>
-                            <span>Hàng chính hãng</span>
-                            <span>Có</span>
-                        </li>
-                        <li>
                             <span>Sim</span>
                             <span th:text="${spec.sim}"></span>
                         </li>
                         <li>
                             <span>Pin</span>
                             <span th:text="${spec.pin}"></span>
-                        </li>
-                        <li>
-                            <span>Trọng lượng sản phẩm</span>
-                            <span>175g</span>
                         </li>
                         <li>
                             <span>RAM</span>
@@ -108,14 +107,6 @@
                         <li>
                             <span>Hệ điều hành</span>
                             <span th:text="${spec.os}"></span>
-                        </li>
-                        <li>
-                            <span>Sản phẩm có được bảo hành không?</span>
-                            <span>Có</span>
-                        </li>
-                        <li>
-                            <span>Hình thức bảo hành</span>
-                            <span>Hóa đơn</span>
                         </li>
                         <li>
                             <span>Thời gian bảo hành</span>
@@ -137,6 +128,7 @@
                                 <div class="btn decrease disabled"><i class="fa-solid fa-minus"></i></div>
                                 <input type="number" min="1" id="quantity" name="quantity" value="1">
                                 <div class="btn increase"><i class="fa-solid fa-plus"></i></div>
+                                <p th:text="${product.quantity} + ' sản phẩm có sẵn'"></p>
                             </div>
                         </div>
                         <div class="form_group">

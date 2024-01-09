@@ -7,6 +7,6 @@ public interface CartService {
     void add(Product product);
     Cart cart(Long customerID);
     void changeQuantity(Long productID, int quantity, Long customerID);
-    void delete(Long productID, Long customerID);
-    void deleteAll(Long customerID);
+    void deleteByProductIDAndCustomerID(Long productID, Long customerID);
+    void deleteAllByCustomerID(Long customerID);
 }

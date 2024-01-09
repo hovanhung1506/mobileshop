@@ -3,6 +3,8 @@ package com.example.mobileshop.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -18,7 +20,6 @@ public class OrderEntity {
     private Long id;
 
     private LocalDateTime orderDate;
-    private boolean isPaid;
     private LocalDateTime paymentDate;
     private String status;
 
