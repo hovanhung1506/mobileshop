@@ -1,0 +1,112 @@
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+#item-pagination {
+  position: absolute;
+  top: 50%;
+  right: 60px;
+  transform: translateY(-50%);
+}
+
+#item-pagination input{
+  width: 60px;
+  padding: 4px;
+  border: 1px solid #aaa;
+  border-radius: 3px;
+}
+
+#item-pagination button[type="submit"] {
+  padding: 3px 4px;
+  border-radius: 3px;
+  border: 1px solid #aaa;
+}
+
+.pagination ul {
+  display: flex;
+  background-color: #fff;
+  padding: 8px;
+  border-radius: 50px;
+  -webkit-border-radius: 50px;
+  -moz-border-radius: 50px;
+  -ms-border-radius: 50px;
+  -o-border-radius: 50px;
+}
+
+.pagination ul li {
+  color: var(--primary-color);
+  list-style: none;
+  line-height: 40px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  -webkit-transition: all 0.3s ease;
+  -moz-transition: all 0.3s ease;
+  -ms-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
+}
+
+.pagination ul li.numb {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+  margin: 0 3px;
+}
+
+.pagination ul li.dots {
+  font-size: 22px;
+  cursor: default;
+}
+
+.pagination ul li.btn {
+  background-color: #fff;
+  padding: 0 20px;
+}
+
+.pagination ul li.prev {
+  border-radius: 25px 5px 5px 25px;
+  -webkit-border-radius: 25px 5px 5px 25px;
+  -moz-border-radius: 25px 5px 5px 25px;
+  -ms-border-radius: 25px 5px 5px 25px;
+  -o-border-radius: 25px 5px 5px 25px;
+}
+
+.pagination ul li.next {
+  border-radius: 5px 25px 25px 5px;
+  -webkit-border-radius: 5px 25px 25px 5px;
+  -moz-border-radius: 5px 25px 25px 5px;
+  -ms-border-radius: 5px 25px 25px 5px;
+  -o-border-radius: 5px 25px 25px 5px;
+}
+
+.pagination ul li.active,
+.pagination ul li.numb:hover,
+.pagination ul li.btn:hover {
+  background-color: var(--primary-color);
+  color: #fff;
+}
+
+.pagination ul li a {
+  display: block;
+}
+
+
+.pagination ul li.prev span,
+.pagination ul li.next span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.pagination ul li.prev span i, .pagination ul li.next span i {
+  font-size: 22px;
+}

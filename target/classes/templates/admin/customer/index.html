@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title th:text="${'Tiki - ' + title}"></title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="shortcut icon" href="/images/favicon.png"
+          type="image/x-icon">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- <link rel="stylesheet" href="/themes/bower_components/Ionicons/css/ionicons.min.css"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.4.8/css/AdminLTE.min.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.4.8/css/skins/_all-skins.min.css">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon">
+    <style>
+        .pagination li.active {
+            background-color: #3c8dbc;
+            color: #fff;
+        }
+        table th:nth-child(1) {
+            width: 5%;
+        }
+        table th:nth-child(2) {
+            width: 20%;
+        }
+        table th:nth-child(3) {
+            width: 40%;
+        }
+        table th:nth-child(4) {
+            width: 15%;
+        }
+        table th:nth-child(5) {
+            width: 10%;
+        }
+        table th:nth-child(6) {
+            width: 10%;
+        }
+        table tbody td:last-child {
+            vertical-align: middle;
+        }
+        table tbody td:last-child div {
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+        }
+        .loader {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            position: relative;
+            animation: rotate 1s linear infinite
+        }
+        .loader::before {
+            content: "";
+            box-sizing: border-box;
+            position: absolute;
+            inset: 0px;
+            border-radius: 50%;
+            border: 5px solid #FFF;
+            animation: prixClipFix 2s linear infinite ;
+        }
+
+        @keyframes rotate {
+            100%   {transform: rotate(360deg)}
+        }
+
+        @keyframes prixClipFix {
+            0%   {clip-path:polygon(50% 50%,0 0,0 0,0 0,0 0,0 0)}
+            25%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 0,100% 0,100% 0)}
+            50%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,100% 100%,100% 100%)}
+            75%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,0 100%,0 100%)}
+            100% {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,0 100%,0 0)}
+        }
+        .loading {
+            position: fixed;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            z-index: 99;
+            background: #80808075;
+            display: none;
+            height: 100vh;
+        }
+        .loading.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="loading">
+    <span class="loader"></span>
+</div>
+<div class="wrapper">
+    <header class="main-header">
+        <!-- Logo -->
+        <a th:href="@{/admin}" class="logo">
+            <!-- mini logo for sidebar mini 50x50 pixels -->
+            <span class="logo-mini"><b>Shop</b></span>
+            <!-- logo for regular state and mobile devices -->
+            <span class="logo-lg"><b>Mobile </b>Shop</span>
+        </a>
+        <!-- Header Navbar: style can be found in header.less -->
+        <nav class="navbar navbar-static-top">
+            <!-- Sidebar toggle button-->
+            <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+                <span class="sr-only">Toggle navigation</span>
+            </a>
+
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+                    <!-- Messages: style can be found in dropdown.less-->
+                    <!-- User Account: style can be found in dropdown.less -->
+                    <li class="dropdown user user-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <img src="/images/blank-profile.png" class="user-image"
+                                 alt="User Image">
+                            <span class="hidden-xs" th:text="${user.name}"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <!-- User image -->
+                            <li class="user-header">
+                                <img src="/images/blank-profile.png" class="img-circle"
+                                     alt="User Image">
+                                <p th:text="${user.name}"></p>
+                            </li>
+                            <!-- Menu Footer-->
+                            <li class="user-footer">
+                                <!--                                <div class="pull-left">-->
+                                <!--                                    <a th:href="@{/admin/changepassword}"-->
+                                <!--                                       class="btn btn-default btn-flat">Đổi mật khẩu</a>-->
+                                <!--                                </div>-->
+                                <div class="pull-right">
+                                    <a th:href="@{/logout}" class="btn btn-default btn-flat">Thoát</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <!-- End Header -->
+
+
+    <!-- SideBar -->
+    <aside class="main-sidebar">
+        <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar">
+            <!-- sidebar menu: : style can be found in sidebar.less -->
+            <ul class="sidebar-menu" data-widget="tree">
+                <li><a th:href="@{/admin}"><span>Trang chủ</span></a></li>
+                <li class="active treeview">
+                    <a href="#">
+                        <span>Quản lý dữ liệu</span>
+                        <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li class="active"><a th:href="@{/admin/customer}">Khách hàng</a></li>
+                        <li><a th:href="@{/admin/brand}">Thương hiệu</a></li>
+                        <li><a th:href="@{/admin/product}">Sản phẩm</a></li>
+                    </ul>
+                </li>
+                <li class="active treeview">
+                    <a href="#">
+                        <span>Bán hàng</span>
+                        <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a th:href="@{/admin/order}">Tra cứu đơn hàng</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </section>
+    </aside>
+    <!-- EndSideBar -->
+
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1 th:text="${title}"></h1>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+
+            <div class="box box-primary">
+                <div class="box-header with-border"></div>
+                <div class="box-body">
+                    <form id="searchInput" th:action="@{/admin/customer/search}" method="get">
+                        <div class="input-group">
+                            <input type="text" name="q" class="form-control"
+                                   placeholder="Nhập tên, địa chỉ, email, số điện thoại khách hàng cần tìm" autofocus
+                                   th:value="${search}">
+                            <span class="input-group-btn">
+                                    <button type="submit" id="search-btn" class="btn btn-flat btn-info">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+<!--                                    <a th:href="@{/admin/customer/create}" class="btn btn-flat btn-primary"-->
+<!--                                       style="margin-left: 5px">-->
+<!--                                        <i class="fa fa-plus"></i> Bổ sung-->
+<!--                                    </a>-->
+                                </span>
+                        </div>
+                    </form>
+                    <div id="searchResult"></div>
+                </div>
+            </div>
+
+            <div class="row" style="margin: 10px 0 10px 0">
+                <div class="col-sm-12">
+                    <div style="display: flex; justify-content: space-between">
+                            <span>Có <strong th:text="${customers.getTotalElements()}"></strong> sản phẩm trong tống số
+                            <strong th:text="${customers.getTotalPages()}"></strong> trang</span>
+                        <!--                            <span id="numberOfElements">Số sản phẩm hiển thị <strong th:text="${numberOfElements}"></strong></span>-->
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover table-striped">
+                    <thead>
+                    <tr class="bg-primary">
+                        <th>#</th>
+                        <th>Tên khách hàng</th>
+                        <th>Địa chỉ</th>
+                        <th>Số điện thoại</th>
+                        <th>Email</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="customer, i : ${customers}">
+                        <td th:text="${(page - 1) * pageSize + i.index + 1}"></td>
+                        <td th:text="${customer.name}"></td>
+                        <td th:text="${customer.address}"></td>
+                        <td th:text="${customer.phone}"></td>
+                        <td th:text="${customer.email}"></td>
+                        <td>
+                            <div>
+                                <a th:href="@{/admin/customer/view/{customerID} (customerID=${customer.id})}"
+                                   class="btn btn-xs btn-flat btn-info">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                                <a th:href="@{/admin/customer/delete/{customerID} (customerID=${customer.id})}"
+                                   class="btn btn-xs btn-flat btn-danger">
+                                    <i class="fa fa-remove"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="box-footer text-center">
+                <ul class="pagination">
+                </ul>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="pull-right hidden-xs">
+            <b>Version</b> 2.4.0
+        </div>
+        <strong>Copyright &copy; 2014-2016
+            <a href="#">Almsaeed Studio</a>.</strong> All rights reserved.
+    </footer>
+    <!-- End footer -->
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.4.8/js/adminlte.min.js"></script>
+<script src="/js/toastify.js"></script>
+<script src="/js/paginateCustomer.js"></script>
+<script src="/js/pagination2.js"></script>
+<script type="text/javascript" th:inline="javascript">
+    let totalPage = /*[[${customers.getTotalPages()}]]*/ 1;
+    let currentPage = /*[[${page}]]*/ 1;
+    totalPage = !totalPage ? 1 : totalPage;
+    currentPage = !currentPage ? 1 : currentPage;
+    pagination2(totalPage, currentPage);
+    const searchInput = document.querySelector('#searchInput')
+    searchInput.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const loading = document.querySelector('.loading')
+        loading.classList.add('active')
+        searchInput.submit();
+    })
+</script>
+</body>
+
+</html>

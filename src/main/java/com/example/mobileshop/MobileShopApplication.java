@@ -1,6 +1,6 @@
 package com.example.mobileshop;
 
-import com.lib.payos.PayOS;
+import com.example.mobileshop.domain.PaymentOS;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -30,9 +30,10 @@ public class MobileShopApplication implements WebMvcConfigurer {
                 .allowCredentials(false)
                 .maxAge(3600); // Max age of the CORS pre-flight request
     }
+
     @Bean
-    public PayOS payOS() {
-        return new PayOS(clientId, apiKey, checksumKey);
+    public PaymentOS paymentOS() {
+        return new PaymentOS(clientId, apiKey, checksumKey);
     }
 
     public static void main(String[] args) {

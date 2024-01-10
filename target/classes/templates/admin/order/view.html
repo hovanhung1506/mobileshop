@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title th:text="'Tiki - ' + ${title}"></title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- <link rel="stylesheet" href="/themes/bower_components/Ionicons/css/ionicons.min.css"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.4.8/css/AdminLTE.min.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.4.8/css/skins/_all-skins.min.css">
+    <!-- Google Font -->
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon">
+    <style>
+        .error-message {
+            margin: 0;
+            color: red;
+        }
+
+        .loader {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            position: relative;
+            animation: rotate 1s linear infinite
+        }
+        .loader::before {
+            content: "";
+            box-sizing: border-box;
+            position: absolute;
+            inset: 0px;
+            border-radius: 50%;
+            border: 5px solid #FFF;
+            animation: prixClipFix 2s linear infinite ;
+        }
+
+        @keyframes rotate {
+            100%   {transform: rotate(360deg)}
+        }
+
+        @keyframes prixClipFix {
+            0%   {clip-path:polygon(50% 50%,0 0,0 0,0 0,0 0,0 0)}
+            25%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 0,100% 0,100% 0)}
+            50%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,100% 100%,100% 100%)}
+            75%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,0 100%,0 100%)}
+            100% {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,0 100%,0 0)}
+        }
+        .loading {
+            position: fixed;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            z-index: 99;
+            background: #80808075;
+            display: none;
+            height: 100vh;
+        }
+        .loading.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="loading">
+    <span class="loader"></span>
+</div>
+<div class="wrapper">
+    <!-- Header -->
+    <header class="main-header">
+        <!-- Logo -->
+        <a th:href="@{/admin}" class="logo">
+            <!-- mini logo for sidebar mini 50x50 pixels -->
+            <span class="logo-mini"><b>Shop</b></span>
+            <!-- logo for regular state and mobile devices -->
+            <span class="logo-lg"><b>Mobile </b>Shop</span>
+        </a>
+        <!-- Header Navbar: style can be found in header.less -->
+        <nav class="navbar navbar-static-top">
+            <!-- Sidebar toggle button-->
+            <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+                <span class="sr-only">Toggle navigation</span>
+            </a>
+
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+                    <!-- Messages: style can be found in dropdown.less-->
+                    <!-- User Account: style can be found in dropdown.less -->
+                    <li class="dropdown user user-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <img src="/images/blank-profile.png" class="user-image"
+                                 alt="User Image">
+                            <span class="hidden-xs" th:text="${user.name}"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <!-- User image -->
+                            <li class="user-header">
+                                <img src="/images/blank-profile.png" class="img-circle"
+                                     alt="User Image">
+                                <p th:text="${user.name}"></p>
+                            </li>
+                            <!-- Menu Footer-->
+                            <li class="user-footer">
+                                <!--                                <div class="pull-left">-->
+                                <!--                                    <a href="~/account/changepassword"-->
+                                <!--                                       class="btn btn-default btn-flat">Đổi mật khẩu</a>-->
+                                <!--                                </div>-->
+                                <div class="pull-right">
+                                    <a th:href="@{/logout}" class="btn btn-default btn-flat">Thoát</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <!-- End Header -->
+
+
+    <!-- SideBar -->
+    <aside class="main-sidebar">
+        <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar">
+            <!-- sidebar menu: : style can be found in sidebar.less -->
+            <ul class="sidebar-menu" data-widget="tree">
+                <li><a href="/"><span>Trang chủ</span></a></li>
+                <li class="active treeview">
+                    <a href="#">
+                        <span>Quản lý dữ liệu</span>
+                        <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a th:href="@{/admin/customer}">Khách hàng</a></li>
+                        <li class="active"><a th:href="@{/admin/brand}">Thương hiệu</a></li>
+                        <li><a th:href="@{/admin/product}">Sản phẩm</a></li>
+                    </ul>
+                </li>
+                <li class="active treeview">
+                    <a href="#">
+                        <span>Bán hàng</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a th:href="@{/admin/order}">Tra cứu đơn hàng</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </section>
+    </aside>
+    <!-- EndSideBar -->
+
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1 th:text="${title}"></h1>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+
+            <div class="box box-primary">
+                <div class="box-header with-border ">
+                    <h3 class="box-title">Thông tin khách hàng</h3>
+                </div>
+
+                <div class="box-body">
+                    <form id="form1" class="form-horizontal">
+                        <input type="hidden" name="id" th:value="${order.id}" />
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Tên khách hàng:</label>
+                            <div class="col-sm-10">
+                                <p class="form-control-static" th:text="${order.customer.name}"></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Số điện thoại:</label>
+                            <div class="col-sm-10">
+                                <p class="form-control-static" th:text="${order.customer.phone}"></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Địa chỉ:</label>
+                            <div class="col-sm-10">
+                                <p class="form-control-static" th:text="${order.customer.address}"></p>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Ngày đặt hàng:</label>
+                            <div class="col-sm-10">
+                                <p class="form-control-static">
+                                    <span th:text="${#temporals.format(order.orderDate, 'HH:mm:ss')}"></span> &nbsp;
+                                    <span th:text="${#temporals.format(order.orderDate, 'dd-MM-yyyy')}"></span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Ngày thanh toán:</label>
+                            <div class="col-sm-10">
+                                <p class="form-control-static">
+                                    <span th:if="${order.paymentDate == null}">Chờ thanh toán</span>
+                                    <span th:if="${order.paymentDate != null}"
+                                          th:text="${#temporals.format(order.paymentDate, 'HH:mm:ss')}">
+                                    </span> &nbsp;
+                                    <span th:if="${order.paymentDate != null}"
+                                          th:text="${#temporals.format(order.paymentDate, 'dd-MM-yyyy')}">
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Tổng tiền:</label>
+                            <div class="col-sm-10">
+                                <p class="form-control-static" th:attr="data-price=${order.total}"></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Trạng thái:</label>
+                            <div class="col-sm-10">
+                                <p class="form-control-static" th:text="${order.status.equals('PAID') ? 'Đã thanh toán' : (order.status.equals('PENDING') ? 'Đang chờ thanh toán' : 'Đã hủy thanh toán')}"></p>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <a class="btn btn-info" th:href="@{/admin/customer/view/{customerID} (customerID=${order.customer.id})}">
+                                    <i class="fa fa-eye" aria-hidden="true"></i>&nbsp; Xem chi tiết
+                                </a>
+                                <a class="btn btn-warning" th:href="@{/admin/order}">
+                                    <i class="fa fa-long-arrow-left" aria-hidden="true"></i>&nbsp; Quay lại
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="box-footer text-center">
+                </div>
+
+                <div class="box box-info">
+                    <div class="box-header with-border ">
+                        <h3 class="box-title">Chi tiết đơn hàng</h3>
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"
+                                    data-toggle="tooltip" title="" data-original-title="Collapse">
+                                <i class="fa fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <table class="table table-bordered table-hover table-striped">
+                            <thead>
+                            <tr class="bg-gray">
+                                <th style="width: 12%;">Ảnh</th>
+                                <th>Tên sản phẩm</th>
+                                <th>Đơn giá</th>
+                                <th>Số lượng</th>
+                                <th>Thành tiền</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="details : ${orderDetails}">
+                                <td style="vertical-align:middle">
+                                    <img th:src="${details.product.photo.startsWith('https://firebasestorage.googleapis.com')
+                                                    ? details.product.photo
+                                                    : '/' + details.product.photo}"
+                                         alt="" style="width:100px; height: 120px; object-fit: cover" />
+                                </td>
+                                <td style="vertical-align:middle;" th:text="${details.product.name}">
+                                </td>
+                                <td style="vertical-align:middle;" th:attr="data-price=${details.price}"></td>
+                                <td style="vertical-align:middle;" th:text="${details.quantity}"></td>
+                                <td style="vertical-align:middle;" th:attr="data-price=${details.quantity * details.price}"></td>
+                                <td style="vertical-align:middle; text-align:center">
+                                    <a class="btn btn-xs btn-primary"
+                                       th:href="@{/admin/product/edit/{productID} (productID=${details.product.id})}">
+                                        <i class="fa fa-eye" aria-hidden="true"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="box-footer text-center">
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="pull-right hidden-xs">
+            <b>Version</b> 2.4.0
+        </div>
+        <strong>Copyright &copy; 2014-2016 <a href="https://adminlte.io">Almsaeed Studio</a>.</strong> All
+        rights
+        reserved.
+    </footer>
+    <!-- End footer -->
+</div>
+<script src="https://www.gstatic.com/firebasejs/6.0.2/firebase.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<!-- AdminLTE App -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.4.8/js/adminlte.min.js"></script>
+<script src="/js/currencyVND.js"></script>
+<script>
+    currencyVND();
+</script>
+</body>
+
+</html>

@@ -1,0 +1,54 @@
+<header>
+    <div class="content">
+        <a href="/" class="logo"> <img src="/images/logo.png" alt="logo" class="img_logo">
+        </a>
+        <div class="search">
+            <span><i class="fa-solid fa-magnifying-glass"></i></span>
+            <form method="get" id="search" th:action="@{/search}">
+                <input type="text" name="q" placeholder="Tìm kiếm..."
+                       autocomplete="off" th:value="${search}">
+                <button type="submit">Tìm kiếm</button>
+            </form>
+        </div>
+        <div class="controls">
+            <div class="controls_item active">
+                <a href="/"> <i class="fa-solid fa-house"></i> <span>Trang chủ</span></a>
+            </div>
+            <div class="controls_item">
+                <a href="#"> <i class="fa-solid fa-crown"></i> <span>Astra</span></a>
+            </div>
+                <div class="controls_item account" th:if="${auth == null}">
+                    <a th:href="@{/login}"> <i class="fa-regular fa-face-smile-wink"></i>
+                        <span>Tài khoản</span>
+                    </a>
+                </div>
+
+                <div class="controls_item account" th:if="${auth != null}">
+                    <a href="javascript:;" th:title="${user.name}">
+                        <i class="fa-regular fa-face-smile-wink"></i>
+                        <span th:text="${user.name}"></span>
+                    </a>
+                    <ul class="submenu">
+                        <li onclick="window.location.href='/user'">
+                            <span><i class="fa-solid fa-circle-info"></i></span>
+                            <span>Thông tin tài khoản</span>
+                        </li>
+                        <li onclick="window.open('/admin')" th:if="${role == '[ROLE_ADMIN]'}">
+                            <span><i class="fa-solid fa-users-gear"></i></span>
+                            <span>Trang quản lý</span>
+                        </li>
+                        <li onclick="window.location.href='/logout'">
+                            <span><i class="fa-solid fa-right-from-bracket"></i></span>
+                            <span>Đăng xuất</span>
+                        </li>
+                    </ul>
+                </div>
+            <div class="controls_item">
+                <a th:href="@{/cart}" class="cart"> <i class="fa-solid fa-cart-shopping"></i>
+                    <span class="quantity"
+                          th:text="${cart == null ? 0 : (cart.cartItems.size() > 99 ? '99+' : cart.cartItems.size())}"></span>
+                </a>
+            </div>
+        </div>
+    </div>
+</header>

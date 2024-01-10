@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Tiki - Giỏ hàng</title>
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/cart.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+</head>
+<body>
+<div th:replace="header"></div>
+<div class="cart-empty"
+     th:style="'display:' + ${cart.cartItems.size() == 0 ? 'flex' : 'none'}">
+    <img src="/images/cart-empty2.png" alt="">
+    <h1>
+        Giỏ hàng trống <a href="/">Mua hàng</a>
+    </h1>
+</div>
+<div class="carts" th:style="'display:' + ${cart.cartItems.size() == 0 ? 'none' : 'block'}">
+    <div class="head">
+        <h1 th:text="'Giỏ hàng của bạn có ' + ${cart.cartItems.size() } + ' sản phẩm'"></h1>
+        <button class="delete-all button-ff4742">Xóa tất cả sản phẩm</button>
+    </div>
+    <ul>
+        <li th:each="item, i : ${cart.cartItems}">
+            <p class="oder-num" th:text="${i.index + 1}"></p>
+            <div class="image-item">
+                <div>
+                    <img th:src="'/' + ${item.product.photo }" alt="">
+                </div>
+            </div>
+            <div class="name-item">
+                <p style="font-weight: 600" th:text="${item.product.name}"></p>
+                <p class="price-origin" th:attr="price-origin=${item.price }" th:text="${item.price}"></p>
+            </div>
+            <div class="quantity-item">
+                <div th:class="'btn decrease ripple ' + ${item.quantity > 1 ? '' : 'disabled' }"
+                     title="giảm"
+                >
+                    <i class="fa-solid fa-minus"></i>
+                </div>
+                <input type="hidden" name="id" th:value="${item.product.id }">
+                <input type="number" th:value="${item.quantity }" name="quantity">
+                <div class="btn increase ripple" title="tăng">
+                    <i class="fa-solid fa-plus"></i>
+                </div>
+            </div>
+            <div class="price-item"
+                 th:attr="price=${item.product.price}"
+                 th:text="${item.product.price * item.quantity}"
+            ></div>
+            <div class="btn delete" title="Xóa">
+                <div>
+                    <i class="fa-solid fa-xmark"></i>
+                </div>
+            </div>
+        </li>
+    </ul>
+    <div class="checkout">
+        <p class="total-price">
+            Tổng tiền: <span></span>
+        </p>
+        <button class="button-13aa52"
+                onclick="window.location.href='/checkout'"
+        >Đặt mua</button>
+    </div>
+</div>
+<script src="/js/cart.js"></script>
+</body>
+</html>

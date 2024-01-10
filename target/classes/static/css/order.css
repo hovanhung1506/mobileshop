@@ -1,0 +1,89 @@
+@import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic);
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
+    margin-bottom: 20px;
+    font-family: "Source Sans Pro", sans-serif;
+    font-size: 16px;
+}
+
+table th, tbody tr td {
+    padding: 8px;
+}
+
+thead tr {
+    color: #fff;
+    background-color: #337ab7;
+}
+
+thead tr th, tbody tr td {
+    border: 1px solid #f4f4f4;
+    border-bottom-width: 2px;
+    text-align: center;
+}
+
+tbody > tr:hover {
+    background-color: #f5f5f5;
+}
+
+tbody > tr:nth-of-type(odd) {
+    background-color: #ecf0f5;
+}
+
+td a {
+    font-size: 12px;
+    background-color: #3c8dbc;
+    border-width: 1px;
+    border-color: #367fa9;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 4px;
+}
+
+td a:hover {
+    background-color: #367fa9;
+}
+
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Source Sans Pro", sans-serif;
+}
+
+.pagination li a {
+    padding: 6px 12px;
+    border: 1px solid #ddd;
+    color: #23527c;
+    background: #fafafa;
+    display: inline-block;
+    cursor: pointer;
+    font-size: 16px;
+    border-right: 0;
+}
+
+.pagination li a:hover {
+    color: #23527c;
+    background-color: #eee;
+    border-color: #ddd;
+}
+
+.pagination > li:first-child a {
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px
+}
+
+.pagination > li:last-child a {
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    border-right: 1px solid #ddd;
+}
+
+.pagination li.active a,
+.pagination li.active a:hover {
+    color: #fff;
+    cursor: default;
+    background-color: #337ab7;
+    border-color: #337ab7;
+}

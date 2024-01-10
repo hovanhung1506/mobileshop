@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tiki - Mua hàng online giá tốt, hàng chuẩn, ship nhanh</title>
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/detail.css">
+    <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+</head>
+
+<body>
+    <div th:replace="header"></div>
+    <main>
+        <div class="wrapper">
+            <div class="product">
+                <div class="product__img">
+                    <img th:src="${(product.photo == null)
+                                ? '/images/products/No-Image.png'
+                                : (product.photo.startsWith('https://firebasestorage.googleapis.com')
+                                ? product.photo
+                                : '/' + product.photo)}" alt="" style="height: 366px; object-fit: cover">
+                </div>
+            </div>
+            <div class="specifications">
+                <div class="info">
+                    <div class="title">
+                            <span>
+                                <i class="fa-solid fa-circle-check"></i>
+                                CHÍNH HÃNG
+                            </span>
+                        <span>Thương hiệu: </span>
+                        <span style="color: rgb(13, 92, 182)">
+                                <a th:href="@{/brand/{brandName} (brandName=${brand.name.toLowerCase()})}"
+                                   th:text="${brand.name}"
+                                ></a>
+                            </span>
+                        <p th:text="${product.name}"></p>
+                    </div>
+                    <div class="price"
+                         th:text="${product.price}"
+                         th:attr="data-price=${product.price}"
+                    ></div>
+                </div>
+                <div class="details">
+                    <h3>Thông tin chi tiết</h3>
+                    <ul>
+                        <li>
+                            <span>Thương hiệu</span>
+                            <span th:text="${brand.name}"></span>
+                        </li>
+                        <li>
+                            <span>Xuất xứ thương hiệu</span>
+                            <span th:text="${brand.origin}"></span>
+                        </li>
+                        <li>
+                            <span>Camera sau</span>
+                            <span th:text="${spec.rearCamera}"></span>
+                        </li>
+                        <li>
+                            <span>Camera trước</span>
+                            <span th:text="${spec.frontCamera}"></span>
+                        </li>
+                        <li>
+                            <span>Chip set</span>
+                            <span th:text="${spec.chipset}"></span>
+                        </li>
+                        <li>
+                            <span>Loại CPU</span>
+                            <span th:text="${spec.cpuType}"></span>
+                        </li>
+                        <li>
+                            <span>Kích thước</span>
+                            <span th:text="${spec.size}"></span>
+                        </li>
+                        <li>
+                            <span>Loại/ Công nghệ màn hình</span>
+                            <span th:text="${spec.screenType}"></span>
+                        </li>
+                        <li>
+                            <span>Kích thước màn hình</span>
+                            <span th:text="${spec.screenSize}"></span>
+                        </li>
+                        <li>
+                            <span>Độ phân giải màn hình</span>
+                            <span th:text="${spec.screenResolution}"></span>
+                        </li>
+                        <li>
+                            <span>Sim</span>
+                            <span th:text="${spec.sim}"></span>
+                        </li>
+                        <li>
+                            <span>Pin</span>
+                            <span th:text="${spec.pin}"></span>
+                        </li>
+                        <li>
+                            <span>RAM</span>
+                            <span th:text="${spec.ramCapacity}"></span>
+                        </li>
+                        <li>
+                            <span>Bộ nhớ trong</span>
+                            <span th:text="${spec.storageCapacity}"></span>
+                        </li>
+                        <li>
+                            <span>Hệ điều hành</span>
+                            <span th:text="${spec.os}"></span>
+                        </li>
+                        <li>
+                            <span>Thời gian bảo hành</span>
+                            <span>12</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="order">
+                <div class="product__img">
+                    <span> <img th:src="'/' + ${product.photo }" alt=""> </span>
+                    <span>Xanh Dương</span>
+                </div>
+                <div class="quantity__input">
+                    <form action="" id="form1" method="post" onsubmit="return false;">
+                        <div class="form_group">
+                            <label for="quantity">Số Lượng</label>
+                            <div class="btns">
+                                <div class="btn decrease disabled"><i class="fa-solid fa-minus"></i></div>
+                                <input type="number" min="1" id="quantity" name="quantity" value="1">
+                                <div class="btn increase"><i class="fa-solid fa-plus"></i></div>
+                                <p th:text="${product.quantity} + ' sản phẩm có sẵn'"></p>
+                            </div>
+                        </div>
+                        <div class="form_group">
+                            <label>Tạm tính</label> <br>
+                            <p class="total__price" th:attr="price=${product.price }"
+                               th:text="${product.price}"
+                            ></p>
+                        </div>
+                        <button type="submit">Mua ngay</button>
+                    </form>
+                    <form th:action="@{/cart/add}" id="form2" method="post">
+                        <input type="hidden" name="quantity" value="1">
+                        <input type="hidden" name="id" th:value="${product.id }">
+                        <div class="form_group">
+                            <button type="submit">Thêm vào giỏ hàng</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="/js/detail.js"></script>
+</body>
+
+</html>

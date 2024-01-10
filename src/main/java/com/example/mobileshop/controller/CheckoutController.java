@@ -1,6 +1,9 @@
 package com.example.mobileshop.controller;
 
-import com.example.mobileshop.domain.*;
+import com.example.mobileshop.domain.Customer;
+import com.example.mobileshop.domain.Order;
+import com.example.mobileshop.domain.PaymentOS;
+import com.example.mobileshop.domain.PaymentOSData;
 import com.example.mobileshop.security.UserPrincipal;
 import com.example.mobileshop.service.CartService;
 import com.example.mobileshop.service.CustomerService;
@@ -9,9 +12,6 @@ import com.example.mobileshop.service.OrderService;
 import com.example.mobileshop.utils.SecurityUtil;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lib.payos.PayOS;
-import com.lib.payos.type.ItemData;
-import com.lib.payos.type.PaymentData;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -20,9 +20,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Controller
 public class CheckoutController {
@@ -39,10 +36,10 @@ public class CheckoutController {
     @Autowired
     private OrderDetailsService orderDetailsService;
 
-    private final PayOS payOS;
+    private final PaymentOS paymentOS;
 
-    public CheckoutController(PayOS payOS) {
-        this.payOS = payOS;
+    public CheckoutController(PaymentOS paymentOS) {
+        this.paymentOS = paymentOS;
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/checkout/success")
@@ -93,8 +90,8 @@ public class CheckoutController {
             order.setStatus("PENDING");
             order = orderService.save(order);
             cartService.deleteAllByCustomerID(order.getCustomer().getId());
-            PaymentData paymentData = getPaymentData(order);
-            JsonNode data = payOS.createPaymentLink(paymentData);
+            PaymentOSData paymentData = paymentOS.getPaymentData(order);
+            JsonNode data = paymentOS.createPaymentLink(paymentData);
 
             String checkoutUrl = data.get("checkoutUrl").asText();
 
@@ -105,21 +102,47 @@ public class CheckoutController {
         }
     }
 
-    private PaymentData getPaymentData(Order order) {
-        final String description = "Thanh toan don hang: " + order.getId();
-        final String returnUrl = "http://localhost:8080/checkout/payment";
-        final String cancelUrl = "http://localhost:8080/checkout/payment";
-        final int price = 2000;
-        // Gen order code
-//        String currentTimeString = String.valueOf(new Date().getTime());
-        int orderCode = order.getId().intValue();
-        List<ItemData> itemList = new ArrayList<>();
-        for(OrderDetails details : orderDetailsService.findByOrderId(order.getId())) {
-            ItemData item = new ItemData(details.getProduct().getName(), details.getQuantity(), details.getPrice());
-            itemList.add(item);
-        }
 
-        return new PaymentData( orderCode, price, description,
-                itemList, cancelUrl, returnUrl);
-    }
+//    @RequestMapping(method = RequestMethod.POST, value = "/checkout", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+//    public void checkout(HttpServletResponse httpServletResponse) {
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        try {
+//            UserPrincipal auth  = SecurityUtil.getCurrentUser();
+//            Order order = new Order();
+//            Customer customer = new Customer();
+//            customer.setId(auth.getId());
+//            order.setId(0L);
+//            order.setCustomer(customer);
+//            order.setStatus("PENDING");
+//            order = orderService.save(order);
+//            cartService.deleteAllByCustomerID(order.getCustomer().getId());
+//            PaymentData paymentData = getPaymentData(order);
+//            JsonNode data = payOS.createPaymentLink(paymentData);
+//
+//            String checkoutUrl = data.get("checkoutUrl").asText();
+//
+//            httpServletResponse.setHeader("Location", checkoutUrl);
+//            httpServletResponse.setStatus(302);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
+
+//    private PaymentData getPaymentData(Order order) {
+//        final String description = "Thanh toan don hang: " + order.getId();
+//        final String returnUrl = "http://localhost:8080/checkout/payment";
+//        final String cancelUrl = "http://localhost:8080/checkout/payment";
+//        final int price = 2000;
+//        // Gen order code
+////        String currentTimeString = String.valueOf(new Date().getTime());
+//        int orderCode = order.getId().intValue();
+//        List<ItemData> itemList = new ArrayList<>();
+//        for(OrderDetails details : orderDetailsService.findByOrderId(order.getId())) {
+//            ItemData item = new ItemData(details.getProduct().getName(), details.getQuantity(), details.getPrice());
+//            itemList.add(item);
+//        }
+//
+//        return new PaymentData( orderCode, price, description,
+//                itemList, cancelUrl, returnUrl);
+//    }
 }
