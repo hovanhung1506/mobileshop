@@ -4,6 +4,7 @@ import com.example.mobileshop.domain.Brand;
 import com.example.mobileshop.entity.BrandEntity;
 import com.example.mobileshop.repository.BrandRepository;
 import com.example.mobileshop.service.BrandService;
+import com.example.mobileshop.service.OrderService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,6 +19,9 @@ public class BrandServiceImpl implements BrandService {
 
     @Autowired
     private BrandRepository brandRepository;
+
+    @Autowired
+    private OrderService orderService;
 
     @Autowired
     private ModelMapper modelMapper;

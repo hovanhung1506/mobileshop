@@ -1,6 +1,10 @@
+const selectBox = document.querySelector('#year')
 function paginate(list) {
     list.forEach((li) => {
         li.addEventListener('click', async () => {
+
+            const selectedIndex = selectBox.selectedIndex;
+            const selectedOptionText = selectBox.options[selectedIndex].value;
             if(li.classList.contains('active')) {return}
             let search = location.search.substring(1);
             let data = {
@@ -10,8 +14,9 @@ function paginate(list) {
                 data = JSON.parse('{"' + decodeURI(search)
                     .replace(/"/g, '\\"')
                     .replace(/&/g, '","')
-                    .replace(/=/g, '":"') + '"}') || {}
+                    .replace(/=/g, '":"') + '"}') || {};
             }
+            data = {...data, year: selectedOptionText}
             const host = 'http://localhost:8080' + window.location.pathname
             const loading = document.querySelector('.loading')
             loading.classList.add('active')
@@ -22,8 +27,6 @@ function paginate(list) {
                 success : function(data) {
                     const response = data.data
                     const table = document.querySelector('table tbody')
-                    // const numberOfElements = document.querySelector('#numberOfElements strong')
-                    // numberOfElements.innerHTML = response.numberOfElements
                     table.innerHTML = ''
                     response.content.forEach((order, index) => {
                         table.innerHTML += `
@@ -55,3 +58,20 @@ function paginate(list) {
         })
     })
 }
+
+selectBox.addEventListener('change', (e) => {
+    const selectedIndex = selectBox.selectedIndex;
+    const selectedOptionText = selectBox.options[selectedIndex].value;
+    const host = 'http://localhost:8080' + window.location.pathname
+    let data = {}
+    let search = location.search.substring(1);
+    if(search) {
+        data = JSON.parse('{"' + decodeURI(search)
+            .replace(/"/g, '\\"')
+            .replace(/&/g, '","')
+            .replace(/=/g, '":"') + '"}') || {};
+    }
+    data = {...data, year: selectedOptionText, page: 1}
+    const params = $.param(data);
+    window.location.href = `${host}?${params}`
+})

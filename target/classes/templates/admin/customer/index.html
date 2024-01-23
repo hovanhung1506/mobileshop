@@ -11,7 +11,7 @@
           type="image/x-icon">
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <!-- <link rel="stylesheet" href="/themes/bower_components/Ionicons/css/ionicons.min.css"> -->
+    <link rel="stylesheet" href="/css/loading.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.4.8/css/AdminLTE.min.css">
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.4.8/css/skins/_all-skins.min.css">
@@ -49,50 +49,6 @@
             display: flex;
             justify-content: space-evenly;
             align-items: center;
-        }
-        .loader {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            position: relative;
-            animation: rotate 1s linear infinite
-        }
-        .loader::before {
-            content: "";
-            box-sizing: border-box;
-            position: absolute;
-            inset: 0px;
-            border-radius: 50%;
-            border: 5px solid #FFF;
-            animation: prixClipFix 2s linear infinite ;
-        }
-
-        @keyframes rotate {
-            100%   {transform: rotate(360deg)}
-        }
-
-        @keyframes prixClipFix {
-            0%   {clip-path:polygon(50% 50%,0 0,0 0,0 0,0 0,0 0)}
-            25%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 0,100% 0,100% 0)}
-            50%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,100% 100%,100% 100%)}
-            75%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,0 100%,0 100%)}
-            100% {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,0 100%,0 0)}
-        }
-        .loading {
-            position: fixed;
-            left: 0;
-            right: 0;
-            top: 0;
-            bottom: 0;
-            z-index: 99;
-            background: #80808075;
-            display: none;
-            height: 100vh;
-        }
-        .loading.active {
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
     </style>
 </head>
@@ -182,6 +138,7 @@
                     </a>
                     <ul class="treeview-menu">
                         <li><a th:href="@{/admin/order}">Tra cứu đơn hàng</a></li>
+                        <li><a th:href="@{/admin/statistic}">Thống kê</a></li>
                     </ul>
                 </li>
             </ul>

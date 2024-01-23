@@ -1,12 +1,11 @@
 package com.example.mobileshop.service.impl;
 
+import com.example.mobileshop.domain.Brand;
 import com.example.mobileshop.domain.Customer;
 import com.example.mobileshop.domain.Order;
 import com.example.mobileshop.entity.*;
-import com.example.mobileshop.repository.CartRepository;
-import com.example.mobileshop.repository.CustomerRepository;
-import com.example.mobileshop.repository.OrderDetailsRepository;
-import com.example.mobileshop.repository.OrderRepository;
+import com.example.mobileshop.repository.*;
+import com.example.mobileshop.service.BrandService;
 import com.example.mobileshop.service.OrderService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +14,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -33,6 +36,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    private BrandRepository brandRepository;
 
     @Override
     public Order save(Order order) {
@@ -77,8 +83,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Page<Order> findAll(String search, Pageable pageable) {
-        Page<OrderEntity> entities = orderRepository.list(search, pageable);
+    public Page<Order> findAll(String search, int year, Pageable pageable) {
+        Page<OrderEntity> entities = orderRepository.list(search, year, pageable);
         return entities.map(order ->{
             Order newOrder = new Order();
             newOrder.setId(order.getId());
@@ -103,6 +109,49 @@ public class OrderServiceImpl implements OrderService {
         Order order = new Order();
         order.setId(orderId);
         return getOrder(entity, order);
+    }
+
+    @Override
+    public List<Integer> listYears() {
+        return orderRepository.listYears();
+    }
+
+    @Override
+    public List<Integer> revenueByYear(int year) {
+        List<OrderEntity> orders = orderRepository.revenueByYear(year);
+        List<Integer> revenue = new ArrayList<>(Collections.nCopies(12, 0));
+
+        orders.forEach(order -> {
+            int total = order.getOrderDetailsEntities()
+                    .stream()
+                    .reduce(0, (a, b) -> a + b.getPrice() * b.getQuantity(), Integer::sum);
+            int month = order.getOrderDate().getMonthValue() - 1;
+            int sum = revenue.get(month);
+            sum += total;
+            revenue.set(month, sum);
+        });
+        return revenue;
+    }
+
+    @Override
+    public List<Brand> revenueByBrandAndYear(int year) {
+        List<OrderEntity> orders = orderRepository.revenueByYear(year);
+        List<Brand> revenue = brandRepository.findAll().stream().map(brand -> modelMapper.map(brand, Brand.class)).toList();
+        orders.forEach(order -> {
+           order.getOrderDetailsEntities().forEach(detail -> {
+               String brandName = detail.getProductEntity().getBrandEntity().getName();
+               int sum = detail.getPrice() * detail.getQuantity();
+               for(Brand brand : revenue) {
+                   if(brand.getName().equals(brandName)) {
+                       sum += brand.getRevenue();
+                       brand.setRevenue(sum);
+                       break;
+                   }
+               }
+           });
+        });
+        return revenue;
+
     }
 
     private Order getOrder(OrderEntity entity, Order order) {

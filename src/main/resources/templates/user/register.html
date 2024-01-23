@@ -20,27 +20,33 @@
                 <h2 class="title">Đăng ký</h2>
                 <form id="formRegister">
                     <div class="input-group">
-                        <label class="label">Họ tên</label>
+                        <label class="label" for="fullName">Họ tên</label>
                         <input class="input--style-4" type="text" name="fullName" id="fullName" >
                         <p class="error-message"></p>
                     </div>
                     <div class="input-group">
-                        <label class="label">Tên đăng nhập</label>
+                        <label class="label" for="username">Tên đăng nhập</label>
                         <input class="input--style-4" type="text" name="username" id="username" >
                         <p class="error-message"></p>
                     </div>
                     <div class="row row-space">
                         <div class="col-2">
                             <div class="input-group">
-                                <label class="label">Mật khẩu</label>
-                                <input class="input--style-4" type="password" name="password" id="passrowd" >
+                                <label class="label" for="password">Mật khẩu</label>
+                                <div class="input-group-icon">
+                                    <input class="input--style-4" type="password" name="password" id="password">
+                                    <i class="zmdi zmdi-eye-off input-icon"></i>
+                                </div>
                                 <p class="error-message"></p>
                             </div>
                         </div>
                         <div class="col-2">
                             <div class="input-group">
-                                <label class="label">Nhập lại mật khẩu</label>
-                                <input class="input--style-4" type="password" name="re-password" id="re-password" >
+                                <label class="label" for="re-password">Nhập lại mật khẩu</label>
+                                <div class="input-group-icon">
+                                    <input class="input--style-4" type="password" name="re-password" id="re-password">
+                                    <i class="zmdi zmdi-eye-off input-icon"></i>
+                                </div>
                                 <p class="error-message"></p>
                             </div>
                         </div>
@@ -48,14 +54,14 @@
                     <div class="row row-space">
                         <div class="col-2">
                             <div class="input-group">
-                                <label class="label">Email</label>
+                                <label class="label" for="email">Email</label>
                                 <input class="input--style-4" type="email" name="email" id="email" >
                                 <p class="error-message"></p>
                             </div>
                         </div>
                         <div class="col-2">
                             <div class="input-group">
-                                <label class="label">Số điện thoại</label>
+                                <label class="label" for="phone">Số điện thoại</label>
                                 <input class="input--style-4" type="text" name="phone" id="phone" >
                                 <p class="error-message"></p>
                             </div>
@@ -64,7 +70,7 @@
                     <div class="row row-space">
                         <div class="col-3">
                             <div class="input-group">
-                                <label class="label">Địa chỉ</label>
+                                <label class="label" for="province">Địa chỉ</label>
                                 <div class="rs-select2 js-select-simple">
                                     <select name="province" class="js-source-province" id="province">
                                         <option disabled="disabled" selected>Tỉnh</option>
@@ -75,7 +81,7 @@
                         </div>
                         <div class="col-3">
                             <div class="input-group">
-                                <label class="label">&nbsp;</label>
+                                <label class="label" for="district">&nbsp;</label>
                                 <div class="rs-select2 js-select-simple">
                                     <select name="district" class="js-source-district" id="district">
                                         <option disabled="disabled" selected>Quận / Huyện</option>
@@ -86,7 +92,7 @@
                         </div>
                         <div class="col-3">
                             <div class="input-group">
-                                <label class="label">&nbsp;</label>
+                                <label class="label" for="ward">&nbsp;</label>
                                 <div class="rs-select2 js-select-simple">
                                     <select name="ward" class="js-source-ward" id="ward">
                                         <option disabled="disabled" selected>Phường / Xã</option>
@@ -97,8 +103,8 @@
                         </div>
                     </div>
                     <div class="input-group">
-                        <label class="label">Địa chỉ cụ thể</label>
-                        <input class="input--style-4" type="text" name="specific-address">
+                        <label class="label" for="specific-address">Địa chỉ cụ thể</label>
+                        <input class="input--style-4" type="text" name="specific-address" id="specific-address">
                         <p></p>
                     </div>
                     <div class="p-t-15">

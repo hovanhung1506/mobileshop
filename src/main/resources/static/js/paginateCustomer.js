@@ -22,8 +22,6 @@ function paginate(list) {
                 success : function(data) {
                     const response = data.data
                     const table = document.querySelector('table tbody')
-                    // const numberOfElements = document.querySelector('#numberOfElements strong')
-                    // numberOfElements.innerHTML = response.numberOfElements
                     table.innerHTML = ''
                     response.content.forEach((customer, index) => {
                         table.innerHTML += `

@@ -8,31 +8,25 @@ function pagination2(totalPages, page) {
 
     let uri = window.location.pathname;
     let search = location.search.substring(1);
-    if(search) {
+    if (search) {
         let params = JSON.parse('{"' + decodeURI(search)
             .replace(/"/g, '\\"')
             .replace(/&/g, '","')
-            .replace(/=/g,'":"') + '"}') || {}
-        let paramsArr = Object.keys(params)
-        paramsArr.forEach((param, index) => {
-            if(param.toLocaleLowerCase() !== 'page') {
-                if(index === 0) {
-                    uri += `?${param}=${params[param]}`
-                }else {
-                    uri += `&${param}=${params[param]}`
-                }
-            }
-        })
-        if(paramsArr.length === 1 && paramsArr[0].toLocaleLowerCase() === 'page') {
-            uri += '?page='
-        }else {
-            uri += "&page=";
+            .replace(/=/g, '":"') + '"}') || {}
+        params = {
+            ...params,
+            page: page
         }
-    }else {
-        uri += "?page=";
+        if (params?.year) {
+            let {year, ...newPrams} = params
+            params = newPrams
+        }
+        uri += '?' + $.param(params)
+    } else {
+        uri += '?page=' + page
     }
     uri = uri.replace("+", "%20")
-    history.pushState(null, null, uri+page)
+    history.pushState(null, null, uri)
 
     if (page > 1) {
         liTag += `<li onclick="pagination2(${totalPages}, ${page - 1})" data-page="${page - 1}">

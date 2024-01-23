@@ -530,7 +530,7 @@ input[type="password"] {
     position: absolute;
     font-size: 18px;
     color: #999;
-    right: 18px;
+    right: 0;
     top: 50%;
     -webkit-transform: translateY(-50%);
     -moz-transform: translateY(-50%);
@@ -538,6 +538,11 @@ input[type="password"] {
     -o-transform: translateY(-50%);
     transform: translateY(-50%);
     cursor: pointer;
+    padding: 16px;
+}
+
+.hidden {
+    display: none;
 }
 
 /* ==========================================================================

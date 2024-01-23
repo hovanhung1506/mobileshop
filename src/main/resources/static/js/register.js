@@ -1,4 +1,5 @@
 const formRegister = document.querySelector('#formRegister')
+const eyes = document.querySelectorAll('.input-icon')
 
 formRegister.addEventListener('submit', async function (e) {
     e.preventDefault();
@@ -146,4 +147,20 @@ formRegister.addEventListener('submit', async function (e) {
     }
 
     await register()
+})
+
+eyes.forEach((eye) => {
+    eye.addEventListener('click', () => {
+        const input = eye.closest('.input-group').querySelector('input')
+        const type = input.getAttribute('type');
+        if (type === 'password') {
+            eye.classList.remove('zmdi-eye-off')
+            eye.classList.add('zmdi-eye')
+            input.setAttribute('type', 'text')
+        } else {
+            eye.classList.remove('zmdi-eye')
+            eye.classList.add('zmdi-eye-off')
+            input.setAttribute('type', 'password')
+        }
+    })
 })

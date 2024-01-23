@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title th:text="${'Tiki - ' + title}"></title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="shortcut icon" href="/images/favicon.png"
+          type="image/x-icon">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/loading.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.4.8/css/AdminLTE.min.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.4.8/css/skins/_all-skins.min.css">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js"></script>
+    <style>
+        .pagination li.active {
+            background-color: #3c8dbc;
+            color: #fff;
+        }
+        table th:nth-child(1) {
+            width: 5%;
+        }
+        table th:nth-child(2) {
+            width: 15%;
+        }
+        table th:nth-child(3) {
+            width: 40%;
+        }
+        table th:nth-child(4) {
+            width: 12.5%;
+        }
+        table th:nth-child(5) {
+            width: 12.5%;
+        }
+        table th:nth-child(6) {
+            width: 10%;
+        }
+        table th:nth-child(7) {
+            width: 5%;
+        }
+        table tbody td:last-child {
+            vertical-align: middle;
+        }
+        table tbody td:last-child div {
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+        }
+    </style>
+</head>
+
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="loading">
+    <span class="loader"></span>
+</div>
+<div class="wrapper">
+    <header class="main-header">
+        <!-- Logo -->
+        <a th:href="@{/admin}" class="logo">
+            <!-- mini logo for sidebar mini 50x50 pixels -->
+            <span class="logo-mini"><b>Shop</b></span>
+            <!-- logo for regular state and mobile devices -->
+            <span class="logo-lg"><b>Mobile </b>Shop</span>
+        </a>
+        <!-- Header Navbar: style can be found in header.less -->
+        <nav class="navbar navbar-static-top">
+            <!-- Sidebar toggle button-->
+            <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+                <span class="sr-only">Toggle navigation</span>
+            </a>
+
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+                    <!-- Messages: style can be found in dropdown.less-->
+                    <!-- User Account: style can be found in dropdown.less -->
+                    <li class="dropdown user user-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <img src="/images/blank-profile.png" class="user-image"
+                                 alt="User Image">
+                            <span class="hidden-xs" th:text="${user.name}"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <!-- User image -->
+                            <li class="user-header">
+                                <img src="/images/blank-profile.png" class="img-circle"
+                                     alt="User Image">
+                                <p th:text="${user.name}"></p>
+                            </li>
+                            <!-- Menu Footer-->
+                            <li class="user-footer">
+                                <!--                                <div class="pull-left">-->
+                                <!--                                    <a th:href="@{/admin/changepassword}"-->
+                                <!--                                       class="btn btn-default btn-flat">Đổi mật khẩu</a>-->
+                                <!--                                </div>-->
+                                <div class="pull-right">
+                                    <a th:href="@{/logout}" class="btn btn-default btn-flat">Thoát</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <!-- End Header -->
+
+
+    <!-- SideBar -->
+    <aside class="main-sidebar">
+        <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar">
+            <!-- sidebar menu: : style can be found in sidebar.less -->
+            <ul class="sidebar-menu" data-widget="tree">
+                <li><a th:href="@{/admin}"><span>Trang chủ</span></a></li>
+                <li class="active treeview">
+                    <a href="#">
+                        <span>Quản lý dữ liệu</span>
+                        <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a th:href="@{/admin/customer}">Khách hàng</a></li>
+                        <li><a th:href="@{/admin/brand}">Thương hiệu</a></li>
+                        <li><a th:href="@{/admin/product}">Sản phẩm</a></li>
+                    </ul>
+                </li>
+                <li class="active treeview">
+                    <a href="#">
+                        <span>Bán hàng</span>
+                        <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a th:href="@{/admin/order}">Tra cứu đơn hàng</a></li>
+                        <li class="active"><a th:href="@{/admin/statistic}">Thống kê</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </section>
+    </aside>
+    <!-- EndSideBar -->
+
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1 th:text="${title}"></h1>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="box box-primary">
+                <div class="box-header with-border ">
+                    <h3 class="box-title">Thống kê doanh thu</h3>
+                </div>
+
+                <div class="box-body">
+                    <div class="revenue" style="max-width: 74%; margin: 0 auto; padding: 40px 0">
+                        <div style="text-align: center;">
+                            <label for="year">Doanh thu năm &nbsp;</label>
+                            <select name="year" id="year" style="width: 100px; padding-left: 20px;">
+                                <option th:each="year : ${years}"
+                                        th:text="${year}"
+                                        th:selected="${year == currentYear}"
+                                ></option>
+                            </select>
+                        </div>
+                        <canvas id="revenueChart"></canvas>
+                    </div>
+                </div>
+                <div class="box-footer text-center">
+                </div>
+            </div>
+
+            <div class="box box-info">
+                <div class="box-header with-border ">
+                    <h3 class="box-title">Thống kê theo thương hiệu</h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"
+                                data-toggle="tooltip" title="" data-original-title="Collapse">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <div class="brand" style="max-width: 50%; margin: 0 auto; padding: 40px 0">
+                        <div style="text-align: center;">
+                            <label for="brand">Thương hiệu &nbsp;</label>
+                            <select name="year" id="brand" style="width: 100px; padding-left: 20px;">
+                                <option th:each="year : ${years}"
+                                        th:text="${year}"
+                                        th:selected="${year == currentYear}"
+                                ></option>
+                            </select>
+                        </div>
+                        <canvas id="brandChart"></canvas>
+                    </div>
+                </div>
+                <div class="box-footer text-center">
+                </div>
+            </div>
+
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="pull-right hidden-xs">
+            <b>Version</b> 2.4.0
+        </div>
+        <strong>Copyright &copy; 2014-2016
+            <a href="#">Almsaeed Studio</a>.</strong> All rights reserved.
+    </footer>
+    <!-- End footer -->
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.4.8/js/adminlte.min.js"></script>
+<script src="/js/chart.js"></script>
+</body>
+
+</html>

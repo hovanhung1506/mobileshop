@@ -17,6 +17,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+
 @Controller
 @RequestMapping("/admin/order")
 public class OrderController {
@@ -33,12 +35,16 @@ public class OrderController {
     @GetMapping({"", "search"})
     public String index(Model model,
                         @RequestParam(defaultValue = "1") int page,
-                        @RequestParam(defaultValue = "") String q) {
+                        @RequestParam(defaultValue = "") String q,
+                        @RequestParam(defaultValue = "1") int year) {
 
         UserPrincipal auth  = SecurityUtil.getCurrentUser();
         int pageSize = 9;
         Pageable pageable = PageRequest.of(page - 1, pageSize, Sort.by("orderDate").descending());
-        Page<Order> orders = orderService.findAll(q.trim(), pageable);
+//        if(year == 1) {
+//            year = LocalDateTime.now().getYear();
+//        }
+        Page<Order> orders = orderService.findAll(q.trim(), year, pageable);
 
 
         model.addAttribute("user", customerService.getByUserName(auth.getUsername()));
@@ -47,6 +53,8 @@ public class OrderController {
         model.addAttribute("title", "Danh sách đơn hàng");
         model.addAttribute("search", q.trim());
 
+        model.addAttribute("years", orderService.listYears());
+        model.addAttribute("currentYear", year);
         model.addAttribute("orders", orders);
         return "admin/order/index";
     }
@@ -54,10 +62,14 @@ public class OrderController {
     @PostMapping({"", "search"})
     @ResponseBody
     public ResponseEntity<?> search(@RequestParam int page,
-                                    @RequestParam(defaultValue = "", required = false) String q) {
+                                    @RequestParam(defaultValue = "", required = false) String q,
+                                    @RequestParam(defaultValue = "1", required = false) int year) {
         ApiResponse<Object> res = new ApiResponse<>();
         Pageable pageable = PageRequest.of(page - 1, 9, Sort.by("orderDate").descending());
-        Page<Order> orders = orderService.findAll(q.trim(), pageable);
+//        if(year == 1) {
+//            year = LocalDateTime.now().getYear();
+//        }
+        Page<Order> orders = orderService.findAll(q.trim(), year, pageable);
         res.setStatus("200");
         res.setData(orders);
         return ResponseEntity.ok(res);
