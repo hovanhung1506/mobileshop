@@ -16,8 +16,7 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
     ProductEntity findByNameIgnoreCase(String name);
 
     @Query("select p from ProductEntity p " +
-            "where ('' = ?1 or p.name like %?1% or p.brandEntity.name like %?1% or p.brandEntity.origin like %?1%) " +
-            "and p.isHidden = false")
+            "where '' = ?1 or p.name like %?1% or p.brandEntity.name like %?1% or p.brandEntity.origin like %?1% ")
     Page<ProductEntity> findByProductNameOrBrandName(String name, Pageable pageable);
 
     @Query("select case when count(*) > 0 then true else false end " +

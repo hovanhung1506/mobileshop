@@ -75,7 +75,6 @@ public class ProductServiceImpl implements ProductService {
     public Product save(Product product) {
         ProductEntity entity = modelMapper.map(product, ProductEntity.class);
         BrandEntity brandEntity = brandRepository.findById(product.getBrandID()).orElse(null);
-        entity.setHidden(false);
         entity.setBrandEntity(brandEntity);
         entity = productRepository.save(entity);
         product = modelMapper.map(entity, Product.class);

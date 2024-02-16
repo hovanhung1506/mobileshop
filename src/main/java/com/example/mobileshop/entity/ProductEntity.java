@@ -19,7 +19,6 @@ public class ProductEntity {
     private int price;
     private int quantity;
     private String photo;
-    private boolean isHidden;
 
     @ManyToOne
     @JoinColumn(name = "brandID")

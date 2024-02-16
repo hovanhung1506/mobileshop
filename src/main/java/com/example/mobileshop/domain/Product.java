@@ -11,5 +11,4 @@ public class Product {
     private String photo;
     private Long brandID;
     private String brandName;
-    private boolean isHidden;
 }
