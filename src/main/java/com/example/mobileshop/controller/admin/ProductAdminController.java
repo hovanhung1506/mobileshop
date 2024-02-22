@@ -157,8 +157,6 @@ public class ProductAdminController {
 
     @PostMapping("delete/{productID}")
     public String delete(@PathVariable Long productID) {
-
-
         productService.delete(productID);
         return "redirect:/admin/product";
     }
