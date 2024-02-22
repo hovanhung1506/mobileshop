@@ -22,11 +22,19 @@ function pagination2(totalPages, page) {
             params = newPrams
         }
         uri += '?' + $.param(params)
+        uri = uri.replace("+", "%20")
+        history.pushState(null, null, uri)
+        delete params.page;
+        if(JSON.stringify(params) === "{}") {
+            uri = window.location.pathname + '?page='
+        }else
+        uri = window.location.pathname + '?' + $.param(params) + '&page='
     } else {
-        uri += '?page=' + page
+        uri += '?page='
+        uri = uri.replace("+", "%20")
+        history.pushState(null, null, uri + page)
     }
-    uri = uri.replace("+", "%20")
-    history.pushState(null, null, uri)
+
 
     if (page > 1) {
         liTag += `<li onclick="pagination2(${totalPages}, ${page - 1})" data-page="${page - 1}">

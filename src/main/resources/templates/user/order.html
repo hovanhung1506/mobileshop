@@ -72,7 +72,7 @@
                             <span th:text="${#temporals.format(order.orderDate, 'dd-MM-yyyy')}"></span>
                         </td>
                         <td>
-                            <span th:if="${order.paymentDate == null}">Chờ thanh toán</span>
+                            <span th:if="${order.paymentDate == null}"> - </span>
                             <span th:if="${order.paymentDate != null}"
                                   th:text="${#temporals.format(order.paymentDate, 'HH:mm:ss')}">
                             </span> &nbsp;
@@ -81,7 +81,7 @@
                             </span>
                         </td>
                         <td th:attr="data-price=${order.total}"></td>
-                        <td th:text="${order.status}"></td>
+                        <td th:text="${order.status == 'PAID' ? 'Đã thanh toán' : (order.status == 'PENDING' ? 'Chờ thanh toán' : 'Đã hủy')}"></td>
                         <td>
                             <a th:href="@{/user/order/{orderID} (orderID=${order.id})}">
                                 <i class="fa-solid fa-eye"></i>

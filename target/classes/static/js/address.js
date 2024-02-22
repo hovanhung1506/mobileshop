@@ -2,10 +2,13 @@ $(document).ready(function () {
     const provinceEl = document.getElementById('province');
     const districtEl = document.getElementById('district');
     const wardEl = document.getElementById('ward');
-    const host = 'https://provinces.open-api.vn/api';
+    const host = 'https://vnprovinces.pythonanywhere.com/api';
 
     const fetchAPI = async (url) => {
+        const loading = document.querySelector('.loading');
+        loading && loading.classList.add('active')
         const response = await fetch(url);
+        loading && loading.classList.remove('active')
         return await response.json();
     };
 
@@ -14,10 +17,10 @@ $(document).ready(function () {
         wardEl.innerHTML = '<option value="" disabled="disabled" selected>Chọn Xã</option>';
         const code = provinceEl.value;
         if (code === '') return;
-        const url = `${host}/p/${code}?depth=2`;
+        const url = `${host}/provinces/${code}`;
         const { districts } = await fetchAPI(url);
         districts.map((item) => {
-            const option = `<option value="${item.code}">${item.name}</option>`;
+            const option = `<option value="${item.id}">${item.full_name}</option>`;
             districtEl.innerHTML += option;
         });
     };
@@ -26,10 +29,10 @@ $(document).ready(function () {
         wardEl.innerHTML = '<option value="" disabled="disabled" selected>Chọn Xã</option>';
         const code = districtEl.value;
         if (code === '') return;
-        const url = `${host}/d/${code}?depth=2`;
+        const url = `${host}/districts/${code}`;
         const { wards } = await fetchAPI(url);
         wards.map((item) => {
-            const option = `<option value=${item.code}>${item.name}</option>`;
+            const option = `<option value=${item.id}>${item.full_name}</option>`;
             wardEl.innerHTML += option;
         });
     };
@@ -38,15 +41,15 @@ $(document).ready(function () {
         const provinceName = provinceEl.options[provinceEl.selectedIndex].text;
         const districtName = districtEl.options[districtEl.selectedIndex].text;
         const wardName = wardEl.options[wardEl.selectedIndex].text;
-        // const address = `${provinceName}, ${districtName}, ${wardName}`;
-        // console.log(address);
+        const address = `${provinceName}, ${districtName}, ${wardName}`;
+        console.log(address);
     };
 
     (async () => {
-        const url = host + '/p';
+        const url = host + '/provinces/?basic=true&limit=100';
         const data = await fetchAPI(url);
-        data.map((item) => {
-            const option = `<option value=${item.code}>${item.name}</option>`;
+        data.results.map((item) => {
+            const option = `<option value=${item.id}>${item.full_name}</option>`;
             provinceEl.innerHTML += option;
         });
         const province = $('#province')

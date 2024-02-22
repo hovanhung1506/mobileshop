@@ -37,7 +37,6 @@ public class CustomerAdminController {
         model.addAttribute("pageSize", pageSize);
         model.addAttribute("totalPages", customers.getTotalPages());
         model.addAttribute("title", "Danh sách đơn hàng");
-//        model.addAttribute("totalElements", customers.getTotalElements());
         model.addAttribute("search", q.trim());
         return "admin/customer/index";
     }
@@ -52,29 +51,6 @@ public class CustomerAdminController {
         res.setStatus("200");
         res.setData(customers);
         return ResponseEntity.ok(res);
-    }
-
-    @GetMapping("create")
-    public String createPage(Model model) {
-        UserPrincipal auth  = SecurityUtil.getCurrentUser();
-
-        Customer customer = new Customer();
-        customer.setId(0L);
-        model.addAttribute("user", customerService.getByUserName(auth.getUsername()));
-        model.addAttribute("title", "Tạo khách hàng mới");
-        model.addAttribute("customer", customer);
-        return "admin/customer/create";
-    }
-
-    @GetMapping("edit/{customerID}")
-    public String editPage(Model model,
-                           @PathVariable Long customerID) {
-        UserPrincipal auth  = SecurityUtil.getCurrentUser();
-        model.addAttribute("user", customerService.getByUserName(auth.getUsername()));
-        model.addAttribute("title", "Cập nhật thông tin khách hàng");
-        model.addAttribute("customer",customerService.getById(customerID));
-
-        return "admin/customer/create";
     }
 
     @GetMapping("view/{customerID}")

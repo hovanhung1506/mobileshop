@@ -1,12 +1,15 @@
 const selProvinceEl = document.getElementById('province');
 const selDistrictEl = document.getElementById('district');
 const selWardEl = document.getElementById('ward');
-const host = 'https://provinces.open-api.vn/api';
+const host = 'https://vnprovinces.pythonanywhere.com/api';
 const form = document.getElementById('form');
 const specificAddressEl = document.querySelector('input[name="specific-address"]');
 
 const fetchAPI = async (url) => {
+    const loading = document.querySelector('.loading');
+    loading && loading.classList.add('active')
     const response = await fetch(url);
+    loading && loading.classList.remove('active')
     return await response.json();
 };
 
@@ -15,10 +18,10 @@ const changeProvince = async () => {
     selWardEl.innerHTML = '<option value="" disabled="disabled" selected>Chọn Xã</option>';
     const code = selProvinceEl.value;
     if (code === '') return;
-    const url = `${host}/p/${code}?depth=2`;
+    const url = `${host}/provinces/${code}`;
     const { districts } = await fetchAPI(url);
     districts.map((item) => {
-        const option = `<option value="${item.code}">${item.name}</option>`;
+        const option = `<option value="${item.id}">${item.full_name}</option>`;
         selDistrictEl.innerHTML += option;
     });
 };
@@ -27,10 +30,10 @@ const changeDistrict = async () => {
     selWardEl.innerHTML = '<option value="" disabled="disabled" selected>Chọn Xã</option>';
     const code = selDistrictEl.value;
     if (code === '') return;
-    const url = `${host}/d/${code}?depth=2`;
+    const url = `${host}/districts/${code}`;
     const { wards } = await fetchAPI(url);
     wards.map((item) => {
-        const option = `<option value=${item.code}>${item.name}</option>`;
+        const option = `<option value=${item.id}>${item.full_name}</option>`;
         selWardEl.innerHTML += option;
     });
 };
@@ -44,10 +47,10 @@ const changeWard = () => {
 };
 
 (async () => {
-    const url = host + '/p';
+    const url = host + '/provinces/?basic=true&limit=100';
     const data = await fetchAPI(url);
-    data.map((item) => {
-        const option = `<option value=${item.code}>${item.name}</option>`;
+    data.results.map((item) => {
+        const option = `<option value=${item.id}>${item.full_name}</option>`;
         selProvinceEl.innerHTML += option;
     });
     const province = $('#province');

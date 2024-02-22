@@ -188,7 +188,7 @@
                         </div>
                         <div class="form-group">
                             <div class="col-lg-offset-2 col-sm-10">
-                                <img th:src="${(product.photo == null)
+                                <img th:src="${(product.photo == null || product.photo == '')
                                 ? '/images/products/No-Image.png'
                                 : (product.photo.startsWith('https://firebasestorage.googleapis.com')
                                 ? product.photo

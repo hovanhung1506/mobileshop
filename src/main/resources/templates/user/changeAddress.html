@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/css/reset.css">
     <link rel="stylesheet" href="/css/header.css">
     <link rel="stylesheet" href="/css/user.css">
+    <link rel="stylesheet" href="/css/loading.css">
     <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
@@ -18,6 +19,9 @@
 <div th:replace="header"></div>
 
 <main>
+    <div class="loading">
+        <span class="loader"></span>
+    </div>
     <div class="nav">
         <div class="avatar">
             <img th:src="${!user.photo.startsWith('https:') ? '/' + user.photo : user.photo}" alt="">

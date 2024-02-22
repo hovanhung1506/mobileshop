@@ -86,8 +86,8 @@ function createBarChart(value) {
 }
 
 function fetchRevenue(year = new Date().getFullYear()) {
-    // const loading = document.querySelector('.loading')
-    // loading.classList.add('active')
+    const loading = document.querySelector('.loading')
+    loading.classList.add('active')
     $.ajax({
         type: "POST",
         url: 'http://localhost:8080/admin/statistic/revenue',
@@ -99,7 +99,10 @@ function fetchRevenue(year = new Date().getFullYear()) {
             for (let i of data.data) {
                 value.push(i)
             }
-            // loading.classList.remove('active')
+            let t = value.reduce((acc, val) => acc + val, 0)
+            const revenue = document.querySelector('.t-revenue')
+            revenue.innerText = new Intl.NumberFormat('vn-VN', {style: 'currency', currency: 'VND'}).format(t)
+            loading.classList.remove('active')
             createBarChart(value)
         },
         error: function (e) {
@@ -181,6 +184,8 @@ function createPolar(labels, value) {
 }
 
 function fetchBrandChart(year = new Date().getFullYear()) {
+    const loading = document.querySelector('.loading')
+    loading.classList.add('active')
     $.ajax({
         type: "POST",
         url: 'http://localhost:8080/admin/statistic/brand',
@@ -194,6 +199,10 @@ function fetchBrandChart(year = new Date().getFullYear()) {
                 labels.push(i.name)
                 value.push(i.revenue)
             }
+            let t = value.reduce((acc, val) => acc + val, 0)
+            const revenue = document.querySelector('.t-brand')
+            revenue.innerText = new Intl.NumberFormat('vn-VN', {style: 'currency', currency: 'VND'}).format(t)
+            loading.classList.remove('active')
             createPolar(labels, value)
         },
         error: function (e) {

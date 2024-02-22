@@ -42,17 +42,17 @@ public class CheckoutController {
         this.paymentOS = paymentOS;
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/checkout/success")
+    @RequestMapping(method = RequestMethod.GET, value = "/payment/success")
     public String success() {
         return "cart/success";
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/checkout/cancel")
+    @RequestMapping(method = RequestMethod.GET, value = "/payment/cancel")
     public String cancel() {
         return "cart/cancel";
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/checkout/payment")
+    @RequestMapping(method = RequestMethod.GET, value = "/payment")
     public String checkout(@RequestParam Boolean cancel,
                            @RequestParam Long orderCode,
                            @RequestParam String status) {
@@ -64,7 +64,7 @@ public class CheckoutController {
         order.setCustomer(customer);
         order.setStatus(status);
         orderService.save(order);
-        return cancel ? "redirect:/checkout/cancel" : "redirect:/checkout/success";
+        return cancel ? "redirect:/payment/cancel" : "redirect:/payment/success";
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/checkout")

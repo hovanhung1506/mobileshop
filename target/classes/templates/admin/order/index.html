@@ -221,7 +221,7 @@
                         <td th:text="${order.customer.address}"></td>
                         <td th:text="${order.customer.phone}"></td>
                         <td th:attr="data-price=${order.total}" th:text="${order.total}"></td>
-                        <td th:text="${order.status}"></td>
+                        <td th:text="${order.status == 'PAID' ? 'Đã thanh toán' : (order.status == 'PENDING' ? 'Chờ thanh toán' : 'Đã hủy')}"></td>
                         <td>
                             <div>
                                 <a th:href="@{/admin/order/edit/{orderID} (orderID=${order.id})}"

@@ -64,6 +64,6 @@ public class BrandServiceImpl implements BrandService {
 
     @Override
     public Brand findByName(String name) {
-        return modelMapper.map(brandRepository.findByNameIgnoreCase(name), Brand.class);
+        return brandRepository.findByNameIgnoreCase(name) == null ? null : modelMapper.map(brandRepository.findByNameIgnoreCase(name), Brand.class);
     }
 }

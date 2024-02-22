@@ -18,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 @Controller
 @RequestMapping("/admin/brand")
@@ -94,7 +95,8 @@ public class BrandAdminController {
         if(brand.getOrigin() == null || brand.getOrigin().isEmpty()) {
             errors.put("origin", "Xuất xứ là bắt buộc");
         }
-        if(brandService.findByName(brand.getName()) != null) {
+        if(brandService.findByName(brand.getName()) != null
+                && !Objects.equals(brandService.findByName(brand.getName()).getId(), brand.getId())) {
             errors.put("name", "Tên thương hiệu đã tồn tại");
         }
 
@@ -102,7 +104,9 @@ public class BrandAdminController {
             UserPrincipal auth  = SecurityUtil.getCurrentUser();
             redirect.addFlashAttribute("errors", errors);
             redirect.addFlashAttribute("brandError", brand);
-            return "redirect:/admin/brand/create";
+            return brand.getId() == 0L
+                    ? "redirect:/admin/brand/create"
+                    : "redirect:/admin/brand/edit/" + brand.getId();
         }
 
         brand.setName(brand.getName().trim());

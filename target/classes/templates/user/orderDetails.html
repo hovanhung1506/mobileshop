@@ -49,8 +49,9 @@
         </ul>
     </div>
     <div class="details">
-        <div class="title">
-            <p>Chi tiết đơn hàng</p>
+        <div class="title" style="display: flex; justify-content: space-between">
+            <p th:text="'Chi tiết đơn hàng #' + ${orderId}"></p>
+            <a th:href="@{/user/order}">Quay lại</a>
         </div>
         <div>
             <table>

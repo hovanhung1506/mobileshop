@@ -194,7 +194,7 @@ public class UserController {
         model.addAttribute("auth", auth);
         model.addAttribute("user", customerService.getByUserName(auth.getUsername()));
         model.addAttribute("cart", cartService.cart(auth.getId()));
-
+        model.addAttribute("order", orderId);
         model.addAttribute("orderDetails", orderDetailsService.findByOrderId(orderId));
         return "user/orderDetails";
     }

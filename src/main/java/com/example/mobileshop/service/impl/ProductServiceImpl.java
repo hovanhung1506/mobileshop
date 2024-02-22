@@ -44,6 +44,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product findByName(String name) {
         ProductEntity entity = productRepository.findByNameIgnoreCase(name.replaceAll("-", " "));
+        if (entity == null) return null;
         Product product = modelMapper.map(entity, Product.class);
         product.setBrandID(entity.getBrandEntity().getId());
         product.setBrandName(entity.getBrandEntity().getName());

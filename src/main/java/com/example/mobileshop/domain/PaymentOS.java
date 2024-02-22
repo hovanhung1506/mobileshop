@@ -97,8 +97,8 @@ public class PaymentOS {
 
     public PaymentOSData getPaymentData(Order order) {
         final String description = "Thanh toan don hang: " + order.getId();
-        final String returnUrl = "http://localhost:8080/checkout/payment";
-        final String cancelUrl = "http://localhost:8080/checkout/payment";
+        final String returnUrl = "http://localhost:8080/payment";
+        final String cancelUrl = "http://localhost:8080/payment";
         final int amount = 2000;
         int orderCode = order.getId().intValue();
         return new PaymentOSData(orderCode, amount, description, cancelUrl, returnUrl);

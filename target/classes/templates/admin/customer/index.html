@@ -19,6 +19,7 @@
           href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
         .pagination li.active {
             background-color: #3c8dbc;
@@ -213,11 +214,7 @@
                             <div>
                                 <a th:href="@{/admin/customer/view/{customerID} (customerID=${customer.id})}"
                                    class="btn btn-xs btn-flat btn-info">
-                                    <i class="fa fa-edit"></i>
-                                </a>
-                                <a th:href="@{/admin/customer/delete/{customerID} (customerID=${customer.id})}"
-                                   class="btn btn-xs btn-flat btn-danger">
-                                    <i class="fa fa-remove"></i>
+                                    <i class="fa-solid fa-eye"></i>
                                 </a>
                             </div>
                         </td>

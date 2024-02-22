@@ -29,7 +29,7 @@ function getFile(e) {
 fileInp.addEventListener('change', (e) => getFile(e));
 function uploadImage() {
     if (fileItem == null) {
-        console.log('image not found');
+        alert('image not found')
         return;
     }
     const loading = document.querySelector('.loading')

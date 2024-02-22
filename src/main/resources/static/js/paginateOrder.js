@@ -1,4 +1,5 @@
 const selectBox = document.querySelector('#year')
+const loading  = document.querySelector('.loading')
 function paginate(list) {
     list.forEach((li) => {
         li.addEventListener('click', async () => {
@@ -60,6 +61,7 @@ function paginate(list) {
 }
 
 selectBox.addEventListener('change', (e) => {
+    loading.classList.add('active')
     const selectedIndex = selectBox.selectedIndex;
     const selectedOptionText = selectBox.options[selectedIndex].value;
     const host = 'http://localhost:8080' + window.location.pathname
